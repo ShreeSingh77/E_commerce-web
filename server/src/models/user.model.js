@@ -8,38 +8,49 @@ const userSchema = new Schema(
             type:String,
              required: true,
              trim: true,
-    },
+     },
 
-    username: {
+     username: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
-    },
+     },
 
-    email: {
+     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
-    },
+      },
 
-    password: {
+      avatar:{
+        type:String,
+        default:""
+      },
+
+     password: {
       type: String,
       required: true,
-    },
+     },
 
-    role: {
+     coverImage:{
+      type:String,
+      default:""
+     },
+
+     role: {
       type: String,
-      enum: ["admin", "customer"],
+      enum: ["customer", "admin"],
       default: "customer",
-    },
+     },
 
-    refreshToken: {
+     refreshToken: {
       type: String,
-    },
+     },
+
   },
   {
     timestamps: true,
