@@ -3,12 +3,14 @@ import { Category } from "../models/category.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import mongoose from "mongoose";
 
 const createProduct = asyncHandler(async (req, res) => {
 
     const { name, description, price, stock, category } = req.body;
-
+   console.log("Body",req.body);
+   
     if (!name || !description || !price || !stock || !category) {
         throw new ApiError(400, "All fields are required");
     }
@@ -19,12 +21,27 @@ const createProduct = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Category not found");
     }
 
+    // Upload product images to Cloudinary
+    const imageLocalPaths = req.files?.map((file) => file.path) || [];
+    console.log("Files",req.files);
+    
+    const imageUrls = [];
+
+    for (const path of imageLocalPaths) {
+        const uploadedImage = await uploadOnCloudinary(path);
+
+        if (uploadedImage?.url) {
+            imageUrls.push(uploadedImage.url);
+        }
+    }
+
     const product = await Product.create({
         name,
         description,
         price,
         stock,
         category,
+        images: imageUrls,
         createdBy: req.user._id
     });
 
@@ -38,21 +55,52 @@ const createProduct = asyncHandler(async (req, res) => {
 });
 
 
-const getAllProducts = asyncHandler(async(req,res )=>
-{
-    const products =await Product.find()
-    .populate("category","name")
-    .populate("createdBy","fullName email")
-    .sort({createdAt :-1});
+const getAllProducts = asyncHandler(async (req, res) => {
 
-    return res
-    .status(200)
-    .json(new ApiResponse(
-        200,
-        products,
-        "Products fetched successfully"
-    )
-);
+    const {
+        search = "",
+        category,
+        page = 1,
+        limit = 10,
+        sort = "-createdAt"
+    } = req.query;
+
+    const filter = {};
+
+    // Search by product name
+    if (search) {
+        filter.name = {
+            $regex: search,
+            $options: "i"
+        };
+    }
+
+    // Filter by category
+    if (category) {
+        filter.category = category;
+    }
+
+    const products = await Product.find(filter)
+        .populate("category", "name")
+        .populate("createdBy", "fullName email")
+        .sort(sort)
+        .skip((page - 1) * limit)
+        .limit(Number(limit));
+
+    const totalProducts = await Product.countDocuments(filter);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                totalProducts,
+                currentPage: Number(page),
+                totalPages: Math.ceil(totalProducts / limit),
+                products
+            },
+            "Products fetched successfully"
+        )
+    );
 });
 
 const getProductById = asyncHandler(async(req,res)=>{
@@ -141,6 +189,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
         )
     );
 });
+
 
 export {
     createProduct,

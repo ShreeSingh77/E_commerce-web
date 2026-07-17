@@ -29,7 +29,11 @@ const productSchema = new mongoose.Schema(
             ref: "Category",
             required: true
         },
-
+        images:[
+            {
+             type:String
+        }
+    ],
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
