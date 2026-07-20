@@ -4,8 +4,8 @@ import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import {uploadOnCloudinary } from "../utils/cloudinary.js"
-
-
+import { sendEmail } from "../utils/mail.service.js";
+import crypto from "crypto";
 
 
  
@@ -64,6 +64,17 @@ const createdUser =await User.findById(user._id).select(
 if(!createdUser){
     throw new ApiError(500,"Something went wrong while registering user");
 }
+
+await sendEmail(
+    user.email,
+    "Welcome to E-Commerce",
+    `
+        <h2>Welcome ${user.fullName}</h2>
+        <p>Your account has been created successfully.</p>
+        <p>Thank you for joining our E-Commerce platform.</p>
+    `
+);
+
 
 return res
 .status(201)
@@ -343,7 +354,79 @@ const updateUserCoverImage =asyncHandler(async(req,res)=>{
     );
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
 
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpiry = Date.now() + 15 * 60 * 1000;
+
+    await user.save({ validateBeforeSave: false });
+
+    await sendEmail(
+    user.email,
+    "Reset Your Password",
+    `
+        <h2>Password Reset Request</h2>
+
+        <p>Hello ${user.fullName},</p>
+
+        <p>Click the link below to reset your password:</p>
+
+        <a href="${resetLink}">
+            Reset Password
+        </a>
+
+        <p>This link will expire in 15 minutes.</p>
+    `
+);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+             {},
+            "Password reset token generated successfully"
+        )
+    );
+
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpiry: { $gt: Date.now() }
+    });
+
+    if (!user) {
+        throw new ApiError(400, "Invalid or expired reset token");
+    }
+
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpiry = undefined;
+
+    await user.save();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {},
+            "Password reset successfully"
+        )
+    );
+});
 export {registerUser,
     loginUser,
     logoutUser,
@@ -352,7 +435,8 @@ export {registerUser,
     changeCurrentPassword,
     updateAccountDetails,
     updateUserAvatar,
-    updateUserCoverImage
+    updateUserCoverImage,
+    forgotPassword,resetPassword
 
 
 };

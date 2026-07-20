@@ -8,6 +8,8 @@ import orderRouter from "./routes/order.routes.js"
 import wishlistRouter from "./routes/wishlist.routes.js"
 import revievRouter from "./routes/review.routes.js"
 import dashboardRouter from "./routes/dashboard.routes.js"
+import  couponRouter from "./routes/coupon.routes.js";
+  
 
 const app = express();
 
@@ -23,6 +25,9 @@ app.use("/api/v1/orders",orderRouter);
 app.use("/api/v1/wishlist",wishlistRouter);
 app.use("/api/v1/reviews",revievRouter);
 app.use("/api/v1/admin/dashboard",dashboardRouter);
+app.use("/api/v1/coupons",couponRouter);
+
+
 
 app.get("/", (req, res) => {
     res.send("Server is running...");

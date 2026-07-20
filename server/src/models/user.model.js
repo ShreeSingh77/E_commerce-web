@@ -50,8 +50,13 @@ const userSchema = new Schema(
      refreshToken: {
       type: String,
      },
-
-  },
+     resetPasswordToken:{
+         type:String,
+     },
+     resetPasswordExpiry:{
+         type:String,
+      },
+    },
   {
     timestamps: true,
   }
