@@ -7,6 +7,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Coupon } from "../models/coupon.model.js";
 import {sendEmail } from "../utils/mail.service.js"
 import mongoose from "mongoose";
+import { Address } from "../models/address.model.js";
+import { User } from "../models/user.model.js";
+
 
 
 const createOrder = asyncHandler(async (req, res) => {
@@ -18,7 +21,7 @@ const createOrder = asyncHandler(async (req, res) => {
         session.startTransaction();
 
         const { couponCode } = req.body;
-
+        const {addressId} = req.body;
         const cartItems = await Cart.find({
             user: req.user._id
         })
@@ -82,6 +85,31 @@ const createOrder = asyncHandler(async (req, res) => {
 
             appliedCoupon = coupon.code;
         }
+        let shippingAddress;
+
+if (addressId) {
+    shippingAddress = await Address.findOne({
+        _id: addressId,
+        user: req.user._id,
+    });
+
+    if (!shippingAddress) {
+        throw new ApiError(404, "Address not found");
+    }
+} else {
+    shippingAddress = await Address.findOne({
+        user: req.user._id,
+        isDefault: true,
+    });
+
+    if (!shippingAddress) {
+        throw new ApiError(
+            400,
+            "Please add and set a default delivery address first"
+        );
+    }
+}
+
 
         const order = await Order.create(
             [
@@ -89,7 +117,8 @@ const createOrder = asyncHandler(async (req, res) => {
                     user: req.user._id,
                     items,
                     totalAmount: finalAmount,
-                    coupon: appliedCoupon
+                    coupon: appliedCoupon,
+                    shippingAddress:shippingAddress._id,
                 }
             ],
             { session }
@@ -148,6 +177,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
         user: req.user._id
     })
     .populate("items.product", "name price images")
+    .populate("shippingAddress")
     .sort({ createdAt: -1 });
 
     return res.status(200).json(
@@ -210,10 +240,64 @@ const updateOrderStatus=asyncHandler(async(req,res)=>{
         )
     );
 });
+
+const cancelOrder = asyncHandler(async (req, res) => {
+
+    const { orderId } = req.params;
+
+    const order = await Order.findOne({
+        _id: orderId,
+        user: req.user._id
+    }).populate("items.product");
+
+    if (!order) {
+        throw new ApiError(404, "Order not found");
+    }
+
+    if (order.status === "Delivered") {
+        throw new ApiError(400, "Delivered order cannot be cancelled");
+    }
+
+    if (order.status === "Cancelled") {
+        throw new ApiError(400, "Order is already cancelled");
+    }
+   for (const item of order.items) {
+    item.product.stock += item.quantity;
+    await item.product.save();
+}
+    order.status = "Cancelled";
+
+    await order.save();
+    
+    const user = await User.findById(req.user._id);
+
+await sendEmail(
+    user.email,
+    "Order Cancelled",
+    `
+        <h2>Hello ${user.fullName},</h2>
+
+        <p>Your order has been cancelled successfully.</p>
+
+        <p><strong>Order ID:</strong> ${order._id}</p>
+
+        <p>If you did not request this cancellation, please contact our support team.</p>
+
+        <p>Thank you for shopping with us.</p>
+    `
+);
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            order,
+            "Order cancelled successfully"
+        )
+    );
+});
 export {
     createOrder,
     getMyOrders,
     getAllOrders,
-    updateOrderStatus
-
+    updateOrderStatus,
+    cancelOrder
 };

@@ -7,8 +7,12 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true
     },
-
-    items: [
+     shippingAddress: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Address",
+    required: true,
+         },
+    items: [ 
       {
         product: {
           type: mongoose.Schema.Types.ObjectId,
@@ -21,7 +25,7 @@ const orderSchema = new mongoose.Schema(
         }
       }
     ],
-
+    
     totalAmount: {
       type: Number,
       required: true
