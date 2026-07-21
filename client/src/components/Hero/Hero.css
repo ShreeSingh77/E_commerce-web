@@ -1,0 +1,148 @@
+.hero{
+    width:100%;
+    background:linear-gradient(135deg,#fff7f0,#f8f9fa);
+    padding:90px 8%;
+}
+
+.hero-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:60px;
+}
+
+.hero-text{
+    flex:1;
+}
+
+.hero-tag{
+    display:inline-block;
+    background:#ffe8d6;
+    color:#ff6b00;
+    padding:8px 18px;
+    border-radius:30px;
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+.hero-text h1{
+    font-size:58px;
+    line-height:1.2;
+    color:#222;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    font-size:18px;
+    color:#666;
+    line-height:1.8;
+    margin-bottom:35px;
+    max-width:550px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:18px;
+}
+
+.shop-btn,
+.explore-btn{
+    padding:14px 30px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.shop-btn{
+    background:#ff6b00;
+    color:#fff;
+}
+
+.shop-btn:hover{
+    background:#e85f00;
+    transform:translateY(-3px);
+}
+
+.explore-btn{
+    background:#fff;
+    color:#222;
+    border:2px solid #ddd;
+}
+
+.explore-btn:hover{
+    border-color:#ff6b00;
+    color:#ff6b00;
+    transform:translateY(-3px);
+}
+
+.hero-image{
+    flex:1;
+    display:flex;
+    justify-content:center;
+}
+
+.hero-image img{
+    width:100%;
+    max-width:500px;
+    transition:.4s;
+    height: 350px;
+    border-radius: 3%;
+}
+
+.hero-image img:hover{
+    transform:scale(1.05);
+}
+
+@media(max-width:992px){
+
+.hero-content{
+    flex-direction:column-reverse;
+    text-align:center;
+}
+
+.hero-text h1{
+    font-size:42px;
+}
+
+.hero-text p{
+    margin:auto;
+    margin-bottom:30px;
+}
+
+.hero-buttons{
+    justify-content:center;
+}
+
+.hero-image img{
+    max-width:380px;
+}
+
+}
+
+@media(max-width:576px){
+
+.hero{
+    padding:70px 5%;
+}
+
+.hero-text h1{
+    font-size:32px;
+}
+
+.hero-text p{
+    font-size:16px;
+}
+
+.hero-buttons{
+    flex-direction:column;
+}
+
+.shop-btn,
+.explore-btn{
+    width:100%;
+}
+
+}
