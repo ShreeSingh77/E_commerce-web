@@ -52,3 +52,40 @@
 .logo:hover{
     color:#ff6b00;
 }
+.nav-icons{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.nav-icons a,
+.search-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:42px;
+    height:42px;
+
+    border:none;
+    border-radius:50%;
+
+    background:transparent;
+    color:white;
+
+    cursor:pointer;
+
+    transition:.3s;
+    text-decoration:none;
+}
+
+.nav-icons a svg,
+.search-btn svg{
+    font-size:22px;
+}
+
+.nav-icons a:hover,
+.search-btn:hover{
+    background:#333;
+    color:#ff6b00;
+}
