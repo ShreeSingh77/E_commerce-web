@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
+import {FiMenu,FiX, FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import "./Navbar.css";
 
 const Navbar = () => {
-
+   const [menuOpen , setMenuOpen] = useState(false);
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/products" },
@@ -16,18 +17,27 @@ const Navbar = () => {
         E-Commerce
       </NavLink>
 
-      <div className="nav-links">
-
-        {navLinks.map((link) => (
-          <NavLink key={link.path} to={link.path}>
-            {link.name}
-          </NavLink>
-        ))}
-
-      </div>
-
+ <button
+  className="menu-btn"
+  onClick={() => setMenuOpen(!menuOpen)}
+>
+  {menuOpen ? <FiX /> : <FiMenu />}
+</button>
+      <div className={`nav-links ${menuOpen ? "active" : ""}`}>
+  {navLinks.map((link) => (
+    <NavLink
+      key={link.path}
+      to={link.path}
+      onClick={() => setMenuOpen(false)}
+    >
+      {link.name}
+    </NavLink>
+  ))}
+</div>
+     
+     
       <div className="nav-icons">
-
+        
         <NavLink to="/wishlist">
           <FiHeart />
         </NavLink>
@@ -36,7 +46,7 @@ const Navbar = () => {
           <FiShoppingCart />
         </NavLink>
 
-        <button className="search-btn">
+        <button className="search-btn" type="button">
           <FiSearch />
         </button>
 
