@@ -36,3 +36,4 @@ export const clearCart = async () => {
   const response = await api.delete("/cart/clear/all");
   return response.data;
 };
+

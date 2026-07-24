@@ -259,29 +259,38 @@ const changeCurrentPassword = asyncHandler(async(req,res) =>{
 });
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
-    const { fullName, email } = req.body;
+    const { fullName, email, username } = req.body;
 
-    if (!fullName || !email) {
+    if (!fullName || !email || !username) {
         throw new ApiError(400, "All fields are required");
     }
 
-     console.log("req.user",req.user);
-     console.log("req.user._id",req.user?._id);
+    const existedUser = await User.findOne({
+        $or: [
+            { username: username.toLowerCase() },
+            { email: email.toLowerCase() }
+        ],
+        _id: { $ne: req.user._id }
+    });
+
+    if (existedUser) {
+        throw new ApiError(409, "Username or email already exists");
+    }
 
     const user = await User.findByIdAndUpdate(
-       
-        req.user?._id,
+        req.user._id,
         {
             $set: {
                 fullName,
-                email
+                email: email.toLowerCase(),
+                username: username.toLowerCase()
             }
         },
         {
             new: true
         }
     ).select("-password -refreshToken");
-   console.log("updateuser",user);
+
     return res.status(200).json(
         new ApiResponse(
             200,

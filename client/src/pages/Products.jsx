@@ -4,7 +4,8 @@ import "./Products.css";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import {useNavigate } from "react-router-dom"
-
+import { addToCart } from "../services/cartServices.js";
+import toast from "react-hot-toast";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -47,6 +48,20 @@ setProducts(response.data.products || []);
     if (sort === "high") return b.price - a.price;
     return 0;
   });
+  const handleAddToCart = async (productId) => {
+  try {
+    const response = await addToCart({
+      productId,
+      quantity: 1,
+    });
+
+    toast.success(response.message || "Product added to cart");
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Failed to add product"
+    );
+  }
+};
   return (
   <div className="products-page">
 
@@ -106,7 +121,10 @@ setProducts(response.data.products || []);
             <h2>₹ {product.price}</h2>
 
             <div className="product-buttons">
-              <button className="cart-btn">
+              <button className="cart-btn"
+              onClick={()=>
+                handleAddToCart(product._id)
+              }>
                 <FiShoppingCart />
                 Add to Cart
               </button>

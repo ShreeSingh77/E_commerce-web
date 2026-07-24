@@ -1,0 +1,50 @@
+.orders-page{
+    padding: 110px 8% 50px;
+    min-height: 100vh;
+    background: #f8fafc;
+}
+
+.orders-page h1{
+    font-size: 36px;
+    margin-bottom: 35px;
+    font-weight: 700;
+    color: #111827;
+}
+.order-card{
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.order-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+}
+
+.status.pending{
+    background:#f59e0b;
+}
+
+.status.shipped{
+    background:#3b82f6;
+}
+
+.status.delivered{
+    background:#22c55e;
+}
+
+.status.cancelled{
+    background:#ef4444;
+}
