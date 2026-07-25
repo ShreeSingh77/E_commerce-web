@@ -419,7 +419,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
 
     const { token } = req.params;
-    const { password } = req.body;
+    const { newPassword } = req.body;
 
     const user = await User.findOne({
         resetPasswordToken: token,
@@ -430,7 +430,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Invalid or expired reset token");
     }
 
-    user.password = password;
+    user.password = newPassword;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpiry = undefined;
 

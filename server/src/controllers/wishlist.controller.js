@@ -31,7 +31,8 @@ const addToWishlist = asyncHandler(async (req, res) => {
         user: req.user._id,
         product: productId
     });
-
+    console.log("Wishlist Saved",wishlist);
+    
     return res.status(201).json(
         new ApiResponse(
             201,
@@ -41,7 +42,8 @@ const addToWishlist = asyncHandler(async (req, res) => {
     );
 });
 const getWishlist = asyncHandler(async (req, res) => {
-
+   
+    
     const wishlist = await Wishlist.find({
         user: req.user._id
     })
@@ -52,7 +54,8 @@ const getWishlist = asyncHandler(async (req, res) => {
             select: "name"
         }
     });
-
+ 
+ 
     return res.status(200).json(
         new ApiResponse(
             200,

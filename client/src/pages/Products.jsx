@@ -6,6 +6,8 @@ import { FaStar } from "react-icons/fa";
 import {useNavigate } from "react-router-dom"
 import { addToCart } from "../services/cartServices.js";
 import toast from "react-hot-toast";
+import { addToWishlist } from "../services/wishlistService.js";
+
 
 const Products = () => {
   const navigate = useNavigate();
@@ -62,6 +64,18 @@ setProducts(response.data.products || []);
     );
   }
 };
+const handleAddToWishlist = async (productId) => {
+  try {
+    const response = await addToWishlist(productId);
+
+    toast.success(response.message || "Product added to wishlist");
+
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Failed to add wishlist"
+    );
+  }
+};
   return (
   <div className="products-page">
 
@@ -95,7 +109,10 @@ setProducts(response.data.products || []);
           <div className="product-image">
             <span className="badge">New</span>
 
-            <button className="wishlist-btn">
+            <button className="wishlist-btn"
+            onClick={()=>
+              handleAddToWishlist(product._id)
+            }>
               <FiHeart />
             </button>
 

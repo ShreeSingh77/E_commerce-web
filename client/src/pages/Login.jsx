@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService.js";
 import toast from "react-hot-toast";
  import "./Login.css";
@@ -46,7 +46,11 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-
+          <div className="forgot-link">
+            <Link to="/forgot-password">
+            Forgot Password?
+            </Link>
+          </div>
           <button type="submit">
             Login
           </button>
