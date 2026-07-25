@@ -7,7 +7,8 @@ import {useNavigate } from "react-router-dom"
 import { addToCart } from "../services/cartServices.js";
 import toast from "react-hot-toast";
 import { addToWishlist } from "../services/wishlistService.js";
-
+import { useWishlist } from "../context/WishlistContext.jsx";
+import { useCart } from "../context/CartContext.jsx";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const Products = () => {
 const [sort, setSort] = useState("");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {fetchWishlist }=useWishlist();
+  const {fetchCart } = useCart();
 
   useEffect(() => {
     fetchProducts();
@@ -56,6 +59,7 @@ setProducts(response.data.products || []);
       productId,
       quantity: 1,
     });
+    await fetchCart();
 
     toast.success(response.message || "Product added to cart");
   } catch (error) {
@@ -67,6 +71,7 @@ setProducts(response.data.products || []);
 const handleAddToWishlist = async (productId) => {
   try {
     const response = await addToWishlist(productId);
+    await fetchWishlist();
 
     toast.success(response.message || "Product added to wishlist");
 
@@ -78,9 +83,10 @@ const handleAddToWishlist = async (productId) => {
 };
   return (
   <div className="products-page">
+      <h1>All Products</h1>
 
-    <h1>Total Products: {products.length}</h1>
-    <h1>All Products</h1>
+    <h1>Explore our latest collection</h1>
+   
 
     <div className="products-controls">
       <input

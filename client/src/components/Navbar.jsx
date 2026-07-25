@@ -2,11 +2,16 @@ import { useState,useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {FiMenu,FiX, FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import { getCurrentUser } from "../services/profileService.js";
+import { useCart } from "../context/CartContext.jsx";
+import { useWishlist } from "../context/WishlistContext.jsx";
 import "./Navbar.css";
 
 const Navbar = () => {
 
    const [menuOpen , setMenuOpen] = useState(false);
+    const {cart } =useCart();
+    const {wishlist } =useWishlist();
+
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/products" },
@@ -54,13 +59,19 @@ useEffect(() => {
      
       <div className="nav-icons">
         
-        <NavLink to="/wishlist">
-          <FiHeart />
-        </NavLink>
+        <NavLink to="/wishlist" className="icon-wrapper">
+  <FiHeart />
+  {wishlist.length > 0 && (
+    <span className="nav-badge">{wishlist.length}</span>
+  )}
+</NavLink>
 
-        <NavLink to="/cart">
-          <FiShoppingCart />
-        </NavLink>
+        <NavLink to="/cart" className="icon-wrapper">
+  <FiShoppingCart />
+  {cart.length > 0 && (
+    <span className="nav-badge">{cart.length}</span>
+  )}
+</NavLink>
 
         <button className="search-btn" type="button">
           <FiSearch />

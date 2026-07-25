@@ -1,33 +1,30 @@
-import { useEffect,useState } from "react";
-import { getWishlist,removeFromWishlist } from "../services/wishlistService";
+import { useEffect } from "react";
+import { removeFromWishlist } from "../services/wishlistService";
 import toast from "react-hot-toast";
 import { addToCart } from "../services/cartServices";
+import { useWishlist } from "../context/WishlistContext";
+import { useCart } from "../context/CartContext";
+
 import "./Wishlist.css";
 
 const Wishlist = () => {
+  
+  
 
-  const [wishlist,setWishlist] = useState([]);
+ const {wishlist,fetchWishlist }=useWishlist();
 
-  const fetchWishlist = async()=>{
-    try{
-      const response = await getWishlist();
-      setWishlist(response.data || []);
-
-    }catch(error){
-      toast.error(
-        error.response?.data?.message || "Failed to fetch wishlist"
-      );
-    }
-  }
+ const {fetchCart} = useCart();
+ 
 const handleRemove = async(productId)=>{
 
   try{
 
     await removeFromWishlist(productId);
 
+      await fetchWishlist();
     toast.success("Product removed from wishlist");
 
-    fetchWishlist();
+
 
   }catch(error){
 
@@ -45,22 +42,22 @@ const handleMoveToCart = async(item)=>{
 
     // Add product to cart
     await addToCart({
-productId:item.product._id,
-quantity:1
+    productId:item.product._id,
+    quantity:1
     })
 
-
+ 
     // Remove from wishlist
     await removeFromWishlist(item._id);
 
+    await fetchWishlist();
+
+    await fetchCart();
 
     toast.success(
       "Product moved to cart"
     );
 
-
-    // Refresh wishlist
-    fetchWishlist();
 
 
   }catch(error){
@@ -90,7 +87,7 @@ quantity:1
         wishlist.length === 0 ? (
 
           <div className="empty-wishlist">
-            <h2>Your wishlist is empty</h2>
+            <h2>❤️ Your wishlist is empty</h2>
             <p>
               Explore products and add your favorites.
             </p>
