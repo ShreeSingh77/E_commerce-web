@@ -1,16 +1,31 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {FiMenu,FiX, FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
+import { getCurrentUser } from "../services/profileService.js";
 import "./Navbar.css";
 
 const Navbar = () => {
+
    const [menuOpen , setMenuOpen] = useState(false);
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Products", path: "/products" },
     {name:"Orders",path:"/orders"},
   ];
+const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+useEffect(() => {
+  const checkUser = async () => {
+    try {
+      await getCurrentUser();
+      setIsLoggedIn(true);
+    } catch (error) {
+      setIsLoggedIn(false);
+    }
+  };
+
+  checkUser();
+}, []);
   return (
     <nav className="navbar">
 
@@ -51,9 +66,9 @@ const Navbar = () => {
           <FiSearch />
         </button>
 
-        <NavLink to="/login">
-          <FiUser />
-        </NavLink>
+        <NavLink to={isLoggedIn ? "/profile" : "/login"}>
+  <FiUser />
+</NavLink>
 
       </div>
 
