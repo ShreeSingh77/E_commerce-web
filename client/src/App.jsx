@@ -26,6 +26,7 @@ import AdminCoupons from "./admin/Coupons";
 import AdminAnalytics from "./admin/Analytics";
 import AdminRoute from "./components/AdminRoute.jsx";
 
+
 function App() {
   return (
     <Routes>
@@ -101,14 +102,7 @@ function App() {
   }
 />
 
-<Route
-  path="/admin/products"
-  element={
-    <AdminRoute>
-      <AdminProducts />
-    </AdminRoute>
-  }
-/>
+
 
 <Route
   path="/admin/orders"
@@ -154,6 +148,10 @@ function App() {
     </AdminRoute>
   }
 />
+
+
+<Route path="/admin/products" element=
+{<AdminProducts />} />
     </Routes>
   );
 }

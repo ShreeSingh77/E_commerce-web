@@ -24,10 +24,10 @@ const LowStockProducts = () => {
 
       <h2>⚠️ Low Stock Products</h2>
 
-      {products.map((product) => (
-  <div key={product._id}>
+  {products.map((product) => (
+  <div key={product._id} className="low-stock-card-item">
 
-    <div className="low-stock-item">
+    <div className="low-stock-header">
 
       <div>
         <h4>{product.name}</h4>
@@ -38,6 +38,11 @@ const LowStockProducts = () => {
         {product.stock} Left
       </span>
 
+    </div>
+
+    <div className="stock-info">
+      <span>Stock: {product.stock}</span>
+      <span>{product.stock * 10}%</span>
     </div>
 
     <div className="progress">
