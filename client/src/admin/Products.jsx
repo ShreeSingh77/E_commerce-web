@@ -2,8 +2,13 @@ import "./Admin.css";
 import AdminSidebar from "../components/AdminSidebar";
 import { useEffect,useState } from "react";
 import toast from "react-hot-toast";
-import { getAllProducts } from "../services/productService";
-import { getAllCategories } from "../services/categoryServices";
+import { getAllProducts ,
+  createProduct,
+  updateProduct
+} from "../services/productService";
+import { getAllCategories,
+  
+ } from "../services/categoryServices";
 
 
 const Products = () => {
@@ -15,6 +20,7 @@ const [search ,setSearch] = useState("");
 const [categories, setCategories] = useState([]);
 const [selectedCategory, setSelectedCategory] = useState("");
 const [showForm ,setShowForm] =useState(false);
+const [editingProduct, setEditingProduct] = useState(null);
 
 const [formData, setFormData] = useState({
   name: "",
@@ -71,8 +77,75 @@ const handleImageChange = (e) => {
     
   setImages(files);
 };
+const handleSubmit = async () => {
 
+  try {
 
+    const data = new FormData();
+
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("price", formData.price);
+    data.append("stock", formData.stock);
+    data.append("category", formData.category);
+
+    images.forEach((image) => {
+      data.append("images", image);
+    });
+   if (editingProduct) {
+  await updateProduct(editingProduct._id, data);
+
+  toast.success("Product Updated Successfully");
+} else {
+  await createProduct(data);
+
+  toast.success("Product Added Successfully");
+}
+fetchProducts();
+
+setShowForm(false);
+
+setEditingProduct(null);
+
+setFormData({
+  name: "",
+  description: "",
+  price: "",
+  stock: "",
+  category: "",
+});
+
+setImages([]);
+
+    
+  } catch (error) {
+
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to create product"
+    );
+
+  }
+
+};
+console.log(editingProduct);
+
+const handleEdit = (product) => {
+
+  setEditingProduct(product);
+
+  setFormData({
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    stock: product.stock,
+    category: product.category._id,
+  });
+
+  setImages([]);
+
+  setShowForm(true);
+};
 useEffect(()=>{
     fetchProducts();
     fetchCategories();
@@ -139,7 +212,9 @@ useEffect(()=>{
   showForm && (
     <div className="product-form">
 
-      <h2>Add Product</h2>
+      <h2>
+  {editingProduct ? "Edit Product" : "Add Product"}
+</h2>
 
       <div className="product-grid">
 
@@ -240,9 +315,9 @@ useEffect(()=>{
 
         <button
   className="save-btn"
-  onClick={() => console.log(formData, images)}
+  onClick={handleSubmit}
 >
-  Save
+  {editingProduct ? "Update":"Save"}
 </button>
 
         <button
@@ -290,7 +365,9 @@ useEffect(()=>{
         <td>{product.stock}</td>
 
         <td>
-          <button className="edit-btn">Edit</button>
+          <button className="edit-btn"
+          onClick={()=>handleEdit(product)}
+          >Edit</button>
 
           <button className="delete-btn">
             Delete

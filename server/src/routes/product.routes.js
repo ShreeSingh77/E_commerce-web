@@ -26,7 +26,11 @@ router.route("/").get(getAllProducts);
 
 router.route("/:productId")
 .get(getProductById)
-.patch(verifyJWT,verifyAdmin,updateProduct)
+.patch(
+    verifyJWT,verifyAdmin,
+
+    upload.array("images",5),
+    updateProduct)
 .delete(verifyJWT,verifyAdmin,deleteProduct);
 
 

@@ -23,3 +23,31 @@ export const getProductById = async (id) => {
     throw error;
   }
 };
+
+export const createProduct = async (formData) => {
+  const response = await api.post(
+    "/products/create",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const updateProduct = async (productId, formData) => {
+  const response = await api.patch(
+    `/products/${productId}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+};
