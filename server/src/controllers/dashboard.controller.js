@@ -40,6 +40,7 @@ const getDashboardStats = asyncHandler(async (req, res) => {
         }
     ]);
 
+  
     return res.status(200).json(
         new ApiResponse(
             200,
@@ -98,6 +99,7 @@ const getTopSellingProducts = asyncHandler(async (req, res) => {
             $unwind: "$items"
         },
         {
+
             $group: {
                 _id: "$items.product",
                 totalSold: {
@@ -158,9 +160,46 @@ const getLowStockProducts = asyncHandler(async (req, res) => {
         )
     );
 });
+const getRecentOrders = asyncHandler(async (req, res) => {
+  const recentOrders = await Order.find()
+    .populate("user", "fullName email")
+    .sort({ createdAt: -1 })
+    .limit(5);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      recentOrders,
+      "Recent orders fetched successfully"
+    )
+  );
+});
+const getOrderStatusStats = asyncHandler(async (req, res) => {
+
+    const statusStats = await Order.aggregate([
+        {
+            $group: {
+                _id: "$status",
+                count: {
+                    $sum: 1
+                }
+            }
+        }
+    ]);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            statusStats,
+            "Order status fetched successfully"
+        )
+    );
+});
 export {
     getDashboardStats,
     getMonthlySales,
     getTopSellingProducts,
-    getLowStockProducts
+    getLowStockProducts,
+    getRecentOrders,
+    getOrderStatusStats
 };

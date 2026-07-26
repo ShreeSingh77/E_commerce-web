@@ -17,6 +17,15 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 
+import Dashboard from "./admin/Dashboard";
+import AdminProducts from "./admin/Products";
+import AdminOrders from "./admin/Orders";
+import AdminUsers from "./admin/Users";
+import AdminCategories from "./admin/Categories";
+import AdminCoupons from "./admin/Coupons";
+import AdminAnalytics from "./admin/Analytics";
+import AdminRoute from "./components/AdminRoute.jsx";
+
 function App() {
   return (
     <Routes>
@@ -82,6 +91,69 @@ function App() {
 
       </Route>
 
+
+      <Route
+  path="/admin/dashboard"
+  element={
+    <AdminRoute>
+      <Dashboard />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/products"
+  element={
+    <AdminRoute>
+      <AdminProducts />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/orders"
+  element={
+    <AdminRoute>
+      <AdminOrders />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/users"
+  element={
+    <AdminRoute>
+      <AdminUsers />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/categories"
+  element={
+    <AdminRoute>
+      <AdminCategories />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/coupons"
+  element={
+    <AdminRoute>
+      <AdminCoupons />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/analytics"
+  element={
+    <AdminRoute>
+      <AdminAnalytics />
+    </AdminRoute>
+  }
+/>
     </Routes>
   );
 }
