@@ -129,7 +129,7 @@
     margin-top:30px;
    
     background:#fff;
-    padding:20px;
+    padding:25px;
     border-radius:16px;
     box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
@@ -710,4 +710,89 @@
 .add-more:hover{
     border-color:#ff6b00;
     color:#ff6b00;
+}
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+}
+
+.delete-modal{
+    width:400px;
+    background:#fff;
+    border-radius:16px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 35px rgba(0,0,0,.2);
+}
+
+.delete-modal h2{
+    margin-bottom:15px;
+}
+
+.delete-modal p{
+    color:#666;
+    margin-bottom:25px;
+}
+.modal-buttons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:16px;
+    margin-top:25px;
+}
+
+.modal-buttons button{
+    width:150px;
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    line-height:1;
+    cursor:pointer;
+    box-sizing:border-box;
+}
+.cancel-btn{
+    background:#f3f4f6;
+    color:#374151;
+}
+
+.cancel-btn:hover{
+    background:#e5e7eb;
+}
+
+.delete-confirm-btn{
+    background:#ef4444;
+    color:#fff;
+}
+
+.delete-confirm-btn:hover{
+    background:#dc2626;
+}
+.delete-confirm-btn{
+    background:#dc2626;
+    color:#fff;
+    border:none;
+    padding:10px 22px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.delete-confirm-btn:hover{
+    background:#b91c1c;
+}
+.delete-icon{
+    font-size: 48px;
+    color: #ef4444;
+    margin-bottom: 12px;
 }

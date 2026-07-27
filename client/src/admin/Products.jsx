@@ -4,12 +4,13 @@ import { useEffect,useState } from "react";
 import toast from "react-hot-toast";
 import { getAllProducts ,
   createProduct,
-  updateProduct
+  updateProduct,
+  deleteProduct
 } from "../services/productService";
 import { getAllCategories,
   
  } from "../services/categoryServices";
-
+import { FiAlertTriangle } from "react-icons/fi";
 
 const Products = () => {
 
@@ -21,6 +22,9 @@ const [categories, setCategories] = useState([]);
 const [selectedCategory, setSelectedCategory] = useState("");
 const [showForm ,setShowForm] =useState(false);
 const [editingProduct, setEditingProduct] = useState(null);
+const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [deleteProductId, setDeleteProductId] = useState(null);
+const[deleteProductName,setDeleteProductName] =useState("");
 
 const [formData, setFormData] = useState({
   name: "",
@@ -146,6 +150,28 @@ const handleEdit = (product) => {
 
   setShowForm(true);
 };
+const handleDelete = async () => {
+  try {
+
+    const response = await deleteProduct(deleteProductId);
+
+    toast.success(response.message);
+
+    fetchProducts();
+
+    setShowDeleteModal(false);
+    setDeleteProductId(null);
+
+  } catch (error) {
+
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to delete product"
+    );
+
+  }
+};
+
 useEffect(()=>{
     fetchProducts();
     fetchCategories();
@@ -157,7 +183,7 @@ useEffect(()=>{
     fetchCategories();
    
 },[]);
- console.log(images);
+ 
  
   return (
     <div className="admin-layout">
@@ -369,15 +395,68 @@ useEffect(()=>{
           onClick={()=>handleEdit(product)}
           >Edit</button>
 
-          <button className="delete-btn">
-            Delete
-          </button>
+ <button
+  className="delete-btn"
+  onClick={() => {
+    setDeleteProductId(product._id);
+    setDeleteProductName(product.name);
+    setShowDeleteModal(true);
+  }}
+>
+  Delete
+</button>
         </td>
 
       </tr>
     ))}
   </tbody>
 </table>
+
+
+{
+  showDeleteModal && (
+    <div className="modal-overlay">
+
+      <div className="delete-modal">
+
+  <FiAlertTriangle className="delete-icon" />
+
+  <h2>Delete Product</h2>
+
+  <p>
+  Are you sure you want to delete
+  <br />
+  <strong>{deleteProductName}</strong> ?
+  <br /><br />
+  This action cannot be undone.
+</p>
+
+  <div className="modal-buttons">
+
+    <button
+      className="cancel-btn"
+      onClick={() => {
+        setShowDeleteModal(false);
+        setDeleteProductId(null);
+      }}
+    >
+      Cancel
+    </button>
+
+    <button
+      className="delete-confirm-btn"
+      onClick={handleDelete}
+    >
+      Delete
+    </button>
+
+  </div>
+
+</div>
+
+    </div>
+  )
+}
       </div>
 
     </div>
