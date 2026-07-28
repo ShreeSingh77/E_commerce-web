@@ -19,7 +19,7 @@ const addToCart = asyncHandler(async (req, res) => {
     }
 
     const existingCartItem = await Cart.findOne({
-        user: req.user._id,
+        user:req.user._id,
         product: productId
     });
 

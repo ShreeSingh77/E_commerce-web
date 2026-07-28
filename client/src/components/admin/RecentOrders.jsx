@@ -18,18 +18,27 @@ const RecentOrders = () => {
     }
   };
 
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "Delivered":
-        return "status-delivered";
-      case "Pending":
-        return "status-pending";
-      case "Cancelled":
-        return "status-cancelled";
-      default:
-        return "";
-    }
-  };
+ const getStatusClass = (status) => {
+  switch (status) {
+    case "Pending":
+      return "status-pending";
+
+    case "Processing":
+      return "status-processing";
+
+    case "Shipped":
+      return "status-shipped";
+
+    case "Delivered":
+      return "status-delivered";
+
+    case "Cancelled":
+      return "status-cancelled";
+
+    default:
+      return "";
+  }
+};
 
   return (
     <div className="table-card">

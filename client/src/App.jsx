@@ -21,11 +21,12 @@ import Dashboard from "./admin/Dashboard";
 import AdminProducts from "./admin/Products";
 import AdminOrders from "./admin/Orders";
 import AdminUsers from "./admin/Users";
-import AdminCategories from "./admin/Categories";
+
 import AdminCoupons from "./admin/Coupons";
 import AdminAnalytics from "./admin/Analytics";
 import AdminRoute from "./components/AdminRoute.jsx";
-import Users from "./admin/Users";
+import Users from "./admin/Users.jsx";
+import Categories from "./admin/Categories.jsx";
 
 
 function App() {
@@ -124,9 +125,7 @@ function App() {
 <Route
   path="/admin/categories"
   element={
-    <AdminRoute>
-      <AdminCategories />
-    </AdminRoute>
+    <Categories />
   }
 />
 
@@ -149,7 +148,8 @@ function App() {
 />
 
 
-<Route path="/admin/products" element=
+<Route path="/admin/products" 
+element=
 {<AdminProducts />} />
     </Routes>
   );

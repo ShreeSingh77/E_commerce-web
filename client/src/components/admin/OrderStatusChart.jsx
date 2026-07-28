@@ -26,22 +26,29 @@ const OrderStatusChart = () => {
     }
   };
 
-  const data = {
-    labels: statusData.map((item) => item._id),
-    datasets: [
-      {
-        data: statusData.map((item) => item.count),
-        backgroundColor: [
-          "#f59e0b", // Pending
-          "#22c55e", // Delivered
-          "#ef4444", // Cancelled
-          "#3b82f6", // Processing
-        ],
-        borderWidth: 2,
-      },
-    ],
-  };
 
+
+const statusColors = {
+  pending: "#f59e0b",
+  processing: "#3b82f6",
+  shipped: "#60225c",
+  delivered: "#22c55e",
+  cancelled: "#ef4444",
+};
+
+const data = {
+  labels: statusData.map((item) => item._id),
+  datasets: [
+    {
+      data: statusData.map((item) => item.count),
+      backgroundColor: statusData.map(
+        (item) =>
+          statusColors[item._id?.toLowerCase()] || "#9ca3af"
+      ),
+      borderWidth: 2,
+    },
+  ],
+};
   return (
     <div className="chart-card">
       <h2>📊 Orders by Status</h2>

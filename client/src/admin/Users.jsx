@@ -103,7 +103,7 @@ const Users = () => {
         <div className="products-toolbar">
           <input
             type="text"
-            placeholder="Search users..."
+            placeholder="🔍 Search users..."
             className="search-input"
             value={search}
             onChange={(e) =>

@@ -81,33 +81,38 @@ const handleCancel = async (orderId) => {
        <div className="order-items">
 
 
-  {order.items.map((item) => (
+ {order.items.map((item) => (
 
-    <div className="order-item" key={item._id}>
+  <div className="order-item" key={item._id}>
 
-      <img
-  src={
-    item.product.images?.length
-      ? item.product.images[0]
-      : "https://via.placeholder.com/150?text=No+Image"
-  }
-  alt={item.product.name}
-/>
+    <img
+      src={
+        item.product?.images?.length
+          ? item.product.images[0]
+          : "https://via.placeholder.com/150?text=No+Image"
+      }
+      alt={item.product?.name || "Product"}
+    />
 
-      <div className="order-item-info">
-  <h5>{item.product.name}</h5>
+    <div className="order-item-info">
 
-  <p className="qty">Quantity: {item.quantity}</p>
+      <h5>
+        {item.product?.name || "Product unavailable"}
+      </h5>
 
+      <p className="qty">
+        Quantity: {item.quantity}
+      </p>
 
-<h4 className="item-price">
-  ₹{item.product.price}
-</h4>
-</div>
+      <h4 className="item-price">
+        ₹{item.product?.price || 0}
+      </h4>
 
     </div>
 
-  ))}
+  </div>
+
+))}
 
 </div>
     <div className="order-actions">

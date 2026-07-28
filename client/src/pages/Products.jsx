@@ -83,15 +83,18 @@ const handleAddToWishlist = async (productId) => {
 };
   return (
   <div className="products-page">
-      <h1>All Products</h1>
-
-    <h1>Explore our latest collection</h1>
+     <div className="product-header">
+  <h1>Explore Our Products</h1>
+  <p>
+    Discover premium products carefully selected for you.
+  </p>
+</div>
    
 
     <div className="products-controls">
       <input
         type="text"
-        placeholder="Search products..."
+        placeholder="🔍 Search products..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
@@ -107,8 +110,17 @@ const handleAddToWishlist = async (productId) => {
     </div>
 
     <div className="products-grid">
+      {
+filteredProducts.length === 0 ? (
 
-      {filteredProducts.map((product) => (
+<div className="no-products">
+  <h2>😕 No products found</h2>
+  <p>Try another search keyword.</p>
+</div>
+
+) : (
+
+      filteredProducts.map((product) => (
 
         <div className="product-card" key={product._id}>
 
@@ -164,7 +176,9 @@ const handleAddToWishlist = async (productId) => {
 
         </div>
 
-      ))}
+      ))
+    )
+      }
 
     </div>
 

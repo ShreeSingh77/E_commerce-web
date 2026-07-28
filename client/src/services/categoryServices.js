@@ -8,7 +8,7 @@ export const getAllCategories = async () => {
 
 // Create Category
 export const createCategory = async (data) => {
-  const response = await api.post("/categories", data, {
+  const response = await api.post("/categories/create", data, {
     withCredentials: true,
   });
   return response.data;

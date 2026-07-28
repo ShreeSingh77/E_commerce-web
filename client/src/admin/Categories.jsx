@@ -1,114 +1,250 @@
 import { useEffect, useState } from "react";
-import AdminSidebar from "../components/AdminSidebar";
-import {
-  getAllCategories,
+import { getAllCategories ,
+  createCategory,
+  updateCategory,
+  deleteCategory
 } from "../services/categoryServices.js";
-import toast from "react-hot-toast";
 import "./Admin.css";
+import AdminSidebar from "../components/AdminSidebar";
+import toast from "react-hot-toast";
 
+const Categories = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+const [editId, setEditId] = useState(null);
+const [isEditing, setIsEditing] = useState(false);
+const [formData, setFormData] = useState({
+  name: "",
+  description: "",
+});
+ useEffect(() => {
+    fetchCategories();
+  }, []);
+ 
+  const fetchCategories = async () => {
+    try {
+      const response = await getAllCategories();
 
+      console.log("Categories:", response);
 
+      setCategories(response.data || []);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const Category=()=>{
-const [categories, setCategories] = useState([]);
-const [search, setSearch] = useState("");
+  if (loading) {
+    return <h2>Loading Categories...</h2>;
+  }
+  const handleEdit = (category) => {
+  setIsEditing(true);
+  setEditId(category._id);
 
+  setFormData({
+    name: category.name,
+    description: category.description || "",
+  });
 
-const fetchCategories = async () => {
+  setShowModal(true);
+};
+const handleAddCategory = async () => {
   try {
-    const response = await getAllCategories();
+    if (!formData.name.trim()) {
+      return toast.error("Category name is required");
+    }
 
-    console.log(response);
+    let response;
 
-    setCategories(response.data);
+    if (isEditing) {
+      response = await updateCategory(editId, formData);
+
+      toast.success(
+        response.message || "Category updated successfully"
+      );
+    } else {
+      response = await createCategory(formData);
+
+      toast.success(
+        response.message || "Category added successfully"
+      );
+    }
+
+    setShowModal(false);
+
+    setFormData({
+      name: "",
+      description: "",
+    });
+
+    setEditId(null);
+    setIsEditing(false);
+
+    fetchCategories();
+
   } catch (error) {
     toast.error(
       error.response?.data?.message ||
-      "Failed to load categories"
+      "Something went wrong"
     );
   }
 };
-const filteredCategories = categories.filter((category) =>
-  category.name
-    .toLowerCase()
-    .includes(search.toLowerCase())
-);
-useEffect(() => {
-  fetchCategories();
-}, []);
-    return (
-  <div className="admin-layout">
+const handleDelete = async (id) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this category?"
+  );
 
-    <AdminSidebar />
+  if (!confirmDelete) return;
 
-    <div className="admin-content">
+  try {
+    const response = await deleteCategory(id);
 
-     <div className="products-header">
+    toast.success(
+      response.message || "Category deleted successfully"
+    );
+
+    fetchCategories();
+
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+      "Failed to delete category"
+    );
+  }
+};
+
+
+  return (
+    <div className="admin-layout">
+      <AdminSidebar />
+      <div className="admin-content">
+    <div className="admin-page">
+  
+       <div className="admin-header">
   <div>
-    <h1>Categories Management</h1>
-    <p>Total Categories: {categories.length}</p>
+    <h1>Categories</h1>
+    <p>Manage all product categories</p>
   </div>
 
-  <button className="add-btn">
+  <button className="add-btn"
+  
+  onClick={()=>setShowModal(true)}>
     + Add Category
   </button>
 </div>
+<div className="admin-card">
+  
+    <table className="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-   <div className="products-toolbar">
-  <input
-    type="text"
-    placeholder="Search category..."
-    className="search-input"
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-  />
-</div>
+        <tbody>
+          {categories.length === 0 ? (
+            <tr>
+              <td colSpan="3">No Categories Found</td>
+            </tr>
+          ) : (
+            categories.map((category, index) => (
+              <tr key={category._id}>
+                <td>{index + 1}</td>
+                <td>{category.name}</td>
+                <td>{category.description || "-"}</td>
+                <td>
+  <button className="edit-btn"
+  onClick={()=>handleEdit(category)}
+  >
+    Edit
+  </button>
 
-    <table className="products-table">
+  <button className="delete-btn"
+  onClick={()=>handleDelete(category._id)}
+  >
+    Delete
+  </button>
+</td>
 
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Slug</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+{showModal && (
+  <div className="category-modal-overlay">
 
-  <tbody>
+    <div className="category-modal">
 
-    {filteredCategories.map((category) => (
+     <h2>
+  {isEditing ? "Edit Category" : "Add Category"}
+</h2>
 
-      <tr key={category._id}>
+      <input
+        type="text"
+        placeholder="Category Name"
+        value={formData.name}
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            name: e.target.value,
+          })
+        }
+      />
 
-        <td>{category.name}</td>
+      <textarea
+        placeholder="Description"
+        rows="4"
+        value={formData.description}
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            description: e.target.value,
+          })
+        }
+      />
 
-        <td>{category.slug}</td>
+      <div className="category-modal-buttons">
 
-        <td>
+        <button
+  className="category-cancel-btn"
+  onClick={() => {
+    setShowModal(false);
+    setIsEditing(false);
+    setEditId(null);
 
-          <button className="edit-btn">
-            Edit
-          </button>
+    setFormData({
+      name: "",
+      description: "",
+    });
+  }}
+>
+  Cancel
+</button>
 
-          <button className="delete-btn">
-            Delete
-          </button>
+        <button className="category-save-btn"
+        onClick={handleAddCategory}
+        >
+          {isEditing ? "Update Category" : "Save Category"}
+        </button>
 
-        </td>
-
-      </tr>
-
-    ))}
-
-  </tbody>
-
-</table>
+      </div>
 
     </div>
 
   </div>
-);
+)}
+</div>
+      
+    </div>
+    </div>
+    </div>
+  );
 };
 
-export default Category;
-
+export default Categories;
