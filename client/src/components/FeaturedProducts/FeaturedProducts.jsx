@@ -41,7 +41,7 @@ const FeaturedProducts = () => {
     <section className="featured-products">
       <h2>Featured Products</h2>
 
-      <div className="product-grid">
+      <div className="fearture-product-grid">
         {products.map(product => (
           <ProductCard
             key={product.id}

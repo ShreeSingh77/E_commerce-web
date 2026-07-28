@@ -2,11 +2,11 @@ import "./ProductCard.css";
 
 const ProductCard = ({ product }) => {
   return (
-    <div className="product-card">
+    <div className="fp-card">
       
       <img src={product.image} alt={product.name} />
 
-      <div className="product-info">
+      <div className="fp-info">
         <h3>{product.name}</h3>
 
         <p className="category">{product.category}</p>
