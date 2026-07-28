@@ -190,19 +190,56 @@ const getMyOrders = asyncHandler(async (req, res) => {
 });
 
 const getAllOrders = asyncHandler(async (req, res) => {
+    const {
+    search = "",
+    status,
+    page = 1,
+    limit = 10
+} = req.query;
+const filter = {};
+if(status){
+    filter.status = status;
+}
 
-    const orders = await Order.find()
-        .populate("user", "fullName email")
-        .populate("items.product", "name price")
-        .sort({ createdAt: -1 });
+let userIds = [];
 
-    return res.status(200).json(
-        new ApiResponse(
-            200,
+if (search) {
+
+    const users = await User.find({
+        fullName: {
+            $regex: search,
+            $options: "i"
+        }
+    });
+
+    userIds = users.map(user => user._id);
+
+    filter.user = {
+        $in: userIds
+    };
+}
+    const orders = await Order.find(filter)
+    .populate("user", "fullName email")
+    .populate("items.product", "name price images")
+    .populate("shippingAddress")
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(Number(limit));
+
+    const totalOrders = await Order.countDocuments(filter);
+
+   return res.status(200).json(
+    new ApiResponse(
+        200,
+        {
             orders,
-            "All orders fetched successfully"
-        )
-    );
+            currentPage: Number(page),
+            totalPages: Math.ceil(totalOrders / limit),
+            totalOrders,
+        },
+        "All orders fetched successfully"
+    )
+);
 });
 
 const updateOrderStatus=asyncHandler(async(req,res)=>{

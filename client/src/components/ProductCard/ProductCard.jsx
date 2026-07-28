@@ -3,6 +3,7 @@ import "./ProductCard.css";
 const ProductCard = ({ product }) => {
   return (
     <div className="product-card">
+      
       <img src={product.image} alt={product.name} />
 
       <div className="product-info">

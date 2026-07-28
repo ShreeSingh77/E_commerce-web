@@ -444,6 +444,106 @@ const resetPassword = asyncHandler(async (req, res) => {
         )
     );
 });
+const getAllUsers = asyncHandler(async (req, res) => {
+
+    const users = await User.find()
+        .select("-password -refreshToken")
+        .sort({ createdAt: -1 });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            users,
+            "Users fetched successfully"
+        )
+    );
+
+});
+
+const updateUserRole = asyncHandler(async (req, res) => {
+
+    const { id } = req.params;
+     const { role } = req.body;
+
+    if (req.user._id.toString() === id) {
+    throw new ApiError(
+        400,
+        "You cannot change your own role."
+    );
+}
+   
+
+    if (!["admin", "customer"].includes(role)) {
+        throw new ApiError(400, "Invalid role");
+    }
+    
+
+  const existingUser = await User.findById(id);
+
+if (!existingUser) {
+    throw new ApiError(404, "User not found");
+}
+
+if (existingUser.role === role) {
+    throw new ApiError(400, `User is already ${role}`);
+}
+
+const user = await User.findByIdAndUpdate(
+    id,
+    { role },
+    { new: true }
+).select("-password -refreshToken");
+
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, user, "Role updated successfully")
+    );
+
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+
+    const { id } = req.params;
+   if (req.user._id.toString() === id) {
+    throw new ApiError(
+        400,
+        "You cannot delete your own account."
+    );
+}
+    const user = await User.findById(id);
+    
+    if (req.user._id.toString() === id) {
+    throw new ApiError(400, "You cannot delete your own account");
+}
+
+if (user.role === "admin") {
+
+    const adminCount = await User.countDocuments({
+        role: "admin",
+    });
+
+    if (adminCount === 1) {
+        throw new ApiError(
+            400,
+            "Last admin cannot be deleted"
+        );
+    }
+
+}
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+
+    await User.findByIdAndDelete(id);
+
+    return res.status(200).json(
+        new ApiResponse(200, {}, "User deleted successfully")
+    );
+
+});
 export {registerUser,
     loginUser,
     logoutUser,
@@ -453,7 +553,11 @@ export {registerUser,
     updateAccountDetails,
     updateUserAvatar,
     updateUserCoverImage,
-    forgotPassword,resetPassword
-
+    forgotPassword,
+    resetPassword,
+    getAllUsers,
+    updateUserRole,
+    deleteUser
+     
 
 };

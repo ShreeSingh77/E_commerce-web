@@ -25,6 +25,7 @@ import AdminCategories from "./admin/Categories";
 import AdminCoupons from "./admin/Coupons";
 import AdminAnalytics from "./admin/Analytics";
 import AdminRoute from "./components/AdminRoute.jsx";
+import Users from "./admin/Users";
 
 
 function App() {
@@ -116,9 +117,7 @@ function App() {
 <Route
   path="/admin/users"
   element={
-    <AdminRoute>
-      <AdminUsers />
-    </AdminRoute>
+    <Users />
   }
 />
 

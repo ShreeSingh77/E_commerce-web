@@ -9,7 +9,10 @@ import {registerUser,
     updateUserAvatar,
     updateUserCoverImage,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    getAllUsers,
+    updateUserRole,
+    deleteUser
 }
      from "../controllers/user.controller.js"
 import {upload } from "../middlewares/multer.middleware.js"
@@ -40,12 +43,20 @@ router.route("/cover-image").patch(verifyJWT,
     upload.single("coverImage"),
     updateUserCoverImage
 );
-
-// router.post("/product", verifyJWT,
-//     verifyAdmin,
-//     createProduct
-// )
-
+router.route("/all-users").get(
+    verifyJWT,
+    verifyAdmin,
+    getAllUsers
+);
+router.patch("/update-role/:id",verifyJWT,
+    verifyAdmin,
+    updateUserRole
+)
+router.route("/delete-user/:id")
+.delete(verifyJWT,
+    verifyAdmin,
+    deleteUser
+)
 
 
 export default router;

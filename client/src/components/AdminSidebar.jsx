@@ -35,7 +35,7 @@ const AdminSidebar = () => {
 
         <NavLink to="/admin/users">
           <FiUsers />
-          Users
+          <span>User</span>
         </NavLink>
 
         <NavLink to="/admin/categories">
