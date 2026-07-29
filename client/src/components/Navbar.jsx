@@ -31,60 +31,89 @@ useEffect(() => {
 
   checkUser();
 }, []);
-  return (
-    <nav className="navbar">
+return (
+  <nav className="navbar">
 
-      <NavLink to="/" className="logo">
-        E-Commerce
-      </NavLink>
-
- <button
-  className="menu-btn"
-  onClick={() => setMenuOpen(!menuOpen)}
->
-  {menuOpen ? <FiX /> : <FiMenu />}
-</button>
-      <div className={`nav-links ${menuOpen ? "active" : ""}`}>
-  {navLinks.map((link) => (
-    <NavLink
-      key={link.path}
-      to={link.path}
-      onClick={() => setMenuOpen(false)}
-    >
-      {link.name}
+    <NavLink to="/" className="logo">
+      <span>E</span>Commerce
     </NavLink>
-  ))}
-</div>
-     
-     
-      <div className="nav-icons">
-        
-        <NavLink to="/wishlist" className="icon-wrapper">
-  <FiHeart />
-  {wishlist.length > 0 && (
-    <span className="nav-badge">{wishlist.length}</span>
-  )}
-</NavLink>
 
-        <NavLink to="/cart" className="icon-wrapper">
-  <FiShoppingCart />
-  {cart.length > 0 && (
-    <span className="nav-badge">{cart.length}</span>
-  )}
-</NavLink>
+    <button
+      className="menu-btn"
+      onClick={() => setMenuOpen(!menuOpen)}
+    >
+      {menuOpen ? <FiX /> : <FiMenu />}
+    </button>
 
-        <button className="search-btn" type="button">
-          <FiSearch />
-        </button>
 
-        <NavLink to={isLoggedIn ? "/profile" : "/login"}>
-  <FiUser />
-</NavLink>
+    <div className={`mobile-menu ${menuOpen ? "active" : ""}`}>
 
+      <div className="nav-links">
+        {navLinks.map((link) => (
+          <NavLink
+            key={link.path}
+            to={link.path}
+            onClick={() => setMenuOpen(false)}
+          >
+            {link.name}
+          </NavLink>
+        ))}
       </div>
 
-    </nav>
-  );
+
+      <div className="nav-icons">
+
+  <NavLink 
+    to="/wishlist" 
+    className="icon-menu-item"
+    onClick={() => setMenuOpen(false)}
+  >
+    <FiHeart />
+    <span>Wishlist</span>
+    {wishlist.length > 0 && (
+      <span className="nav-badge">
+        {wishlist.length}
+      </span>
+    )}
+  </NavLink>
+
+
+  <NavLink 
+    to="/cart" 
+    className="icon-menu-item"
+    onClick={() => setMenuOpen(false)}
+  >
+    <FiShoppingCart />
+    <span>Cart</span>
+    {cart.length > 0 && (
+      <span className="nav-badge">
+        {cart.length}
+      </span>
+    )}
+  </NavLink>
+
+
+  <button className="icon-menu-item search-btn">
+    <FiSearch />
+    <span>Search</span>
+  </button>
+
+
+  <NavLink 
+    to={isLoggedIn ? "/profile" : "/login"}
+    className="icon-menu-item"
+    onClick={() => setMenuOpen(false)}
+  >
+    <FiUser />
+    <span>{isLoggedIn ? "Profile" : "Login"}</span>
+  </NavLink>
+
+</div>
+
+    </div>
+
+  </nav>
+);
 };
 
 export default Navbar;

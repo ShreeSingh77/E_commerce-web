@@ -14,10 +14,19 @@ const Footer = () => {
 
         <div className="footer-box">
           <h2 className="footer-logo">E-Commerce</h2>
+
           <p>
-            Your one-stop destination for quality products at the best prices.
-            Shop smarter with us.
+            Discover premium products with trusted quality, secure shopping,
+            and fast delivery. Making your online shopping experience simple
+            and enjoyable.
           </p>
+
+          <div className="social-icons">
+            <FaFacebookF />
+            <FaInstagram />
+            <FaTwitter />
+            <FaLinkedinIn />
+          </div>
         </div>
 
         <div className="footer-box">
@@ -39,18 +48,11 @@ const Footer = () => {
         </div>
 
         <div className="footer-box">
-          <h3>Contact</h3>
+          <h3>Contact Us</h3>
 
           <p>📍 Lucknow, India</p>
           <p>📞 +91 9876543210</p>
           <p>✉ support@ecommerce.com</p>
-
-          <div className="social-icons">
-            <FaFacebookF />
-            <FaInstagram />
-            <FaTwitter />
-            <FaLinkedinIn />
-          </div>
         </div>
 
       </div>
