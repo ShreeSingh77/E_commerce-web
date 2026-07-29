@@ -28,7 +28,7 @@ const Cart=()=>{
     const response = await getCart();
    
     console.log("fullname response",response);
-    console.log("response data" ,response.data);
+    console.log("fill cart data" ,response.data);
     
     setCart(response.data || []);
   } catch (error) {
@@ -66,7 +66,9 @@ const handleApplyCoupon = async () => {
   }
 
   try {
-    const response = await applyCoupon(couponCode, subtotal);
+    const response = await applyCoupon({
+      code:couponCode.toUpperCase(),
+      totalAmount : subtotal});
 
     setDiscount(response.data.discountAmount);
     setFinalTotal(response.data.finalAmount);
@@ -95,7 +97,8 @@ const totalItems = cart.reduce(
 );
 
 const subtotal = cart.reduce(
-  (acc, item) => acc + item.product.price * item.quantity,
+  (acc, item) =>
+    acc + ((item.product?.price || 0) * item.quantity),
   0
 );
 useEffect(() => {
@@ -127,17 +130,20 @@ if (!loading && cart.length === 0) {
 
       <h1>Shopping Cart</h1>
 
-      {cart.map((item) => (
+      {cart.map((item) => {
+  if (!item.product) return null;
+
+  return (
         <div className="cart-card" key={item._id}>
 
           <img
-            src={item.product.images[0]}
-            alt={item.product.name}
+            src={item.product?.images?.[0]}
+            alt={item.product?.name}
           />
 <div className="cart-info">
-  <h2>{item.product.name}</h2>
+  <h2>{item.product?.name}</h2>
 
-  <p className="price">₹ {item.product.price}</p>
+  <p className="price">₹ {item.product?.price || 0}</p>
 
   <div className="cart-bottom">
 
@@ -170,7 +176,10 @@ if (!loading && cart.length === 0) {
 </div>
 
         </div>
-      ))}
+      
+    
+    )}
+  )}
 
     </div>
 

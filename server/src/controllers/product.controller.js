@@ -6,6 +6,10 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import mongoose from "mongoose";
 
+import {Cart }  from "../models/cart.model.js"
+import {Wishlist } from "../models/wishlist.model.js"
+import {Review }  from "../models/review.model.js"
+
 const createProduct = asyncHandler(async (req, res) => {
 
     const { name, description, price, stock, category } = req.body;
@@ -179,7 +183,21 @@ const deleteProduct = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Product not found");
     }
 
+    // Delete Product
     await Product.findByIdAndDelete(productId);
+
+    // Cleanup related data
+    await Cart.deleteMany({
+        product: productId,
+    });
+
+    await Wishlist.deleteMany({
+        product: productId,
+    });
+
+    await Review.deleteMany({
+        product: productId,
+    });
 
     return res.status(200).json(
         new ApiResponse(
@@ -189,7 +207,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
         )
     );
 });
-
 
 export {
     createProduct,

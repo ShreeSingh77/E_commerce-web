@@ -100,7 +100,12 @@ const handleMoveToCart = async(item)=>{
           <div className="wishlist-grid">
 
             {
-              wishlist.map((item)=>(
+
+              wishlist
+  .filter((item) => item.product)
+  .map((item) => (
+    
+     
 
                 <div className="wishlist-card" key={item._id}>
 
@@ -146,6 +151,9 @@ const handleMoveToCart = async(item)=>{
 
               ))
             }
+  
+             
+            
 
           </div>
 

@@ -27,19 +27,32 @@ const Features = () => {
 
   return (
     <section className="features">
-      <h2>Why Choose Us</h2>
+
+      <div className="section-title">
+        <span>Our Promise</span>
+        <h2>Why Choose Us</h2>
+        <p>
+          We deliver quality products with exceptional service to make every
+          shopping experience memorable.
+        </p>
+      </div>
 
       <div className="features-grid">
         {features.map((item, index) => (
           <div className="feature-card" key={index}>
-            <div className="feature-icon">{item.icon}</div>
+
+            <div className="feature-icon">
+              {item.icon}
+            </div>
 
             <h3>{item.title}</h3>
 
             <p>{item.description}</p>
+
           </div>
         ))}
       </div>
+
     </section>
   );
 };

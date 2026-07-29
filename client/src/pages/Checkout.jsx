@@ -4,11 +4,12 @@ import { getAddresses ,addAddress} from "../services/addressService";
 import toast from "react-hot-toast";
 import { createOrder } from "../services/orderService";
 import { useNavigate } from "react-router-dom";
-import { getCart } from "../services/cartServices";
-
+import { getCart } from "../services/cartServices.js";
+import { useCart } from "../context/CartContext.jsx";
 
 
 const Checkout = () => {
+  const {fetchCart:refreshCart}=useCart();
   const [addresses, setAddresses] = useState([]);
  const [showForm,setShowForm]=useState(false);
  const [fullName, setFullName] = useState("");
@@ -104,7 +105,7 @@ const response = await createOrder(
   selectedAddress,
   couponCode
 );
-
+    await refreshCart();
     toast.success(response.message || "Order Placed Successfully");
 
      localStorage.removeItem("couponCode");

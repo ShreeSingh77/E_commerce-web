@@ -1,66 +1,88 @@
 .product-details-page{
     padding:120px 8%;
+    background: #f8fafc;
 }
 
 .product-details-container{
-    max-width:1100px;
-    margin:0 auto;
-
+    max-width:1200px;
+    margin:auto;
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:45px;
-    align-items:center;
+    gap:40px;
+    align-items:stretch;
+}
 
+.product-left{
+    background:#fff;
+    border-radius:20px;
+    padding:30px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.product-left img{
+    width:100%;
+    max-width:420px;
+    height:420px;
+    object-fit:contain;
+    transition:.4s;
+}
+
+.product-left:hover img{
+    transform:scale(1.08);
+}
+.product-right{
     background:#fff;
     padding:35px;
     border-radius:20px;
     box-shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
-.product-left img{
-    width:100%;
-    max-width:450px;
-    max-height:350px;
-    object-fit:contain;
-    display:block;
-    margin:auto;
-}
-.product-right{
-    max-height: 480px;
-    width: 100%;
-}
 .product-right h1{
-    font-size:38px;
-    margin-bottom:20px;
+    font-size:42px;
+    font-weight:700;
+    color:#1e293b;
+    margin-bottom:15px;
 }
 
 .product-rating{
+    display:flex;
+    align-items:center;
+    gap:8px;
     color:#f59e0b;
     font-size:20px;
     margin-bottom:20px;
 }
 
 .product-right h2{
+    font-size:38px;
+    font-weight:700;
     color:#6C63FF;
-    font-size:34px;
     margin-bottom:20px;
 }
 
 .stock{
-    color:#22c55e;
+    display:inline-block;
+    padding:8px 18px;
+    background:#dcfce7;
+    color:#15803d;
+    border-radius:30px;
     font-weight:600;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
 .description{
-    color:#555;
+    color:#64748b;
     line-height:1.8;
-    font-size:17px;
+    font-size:16px;
+    margin-bottom:25px;
 }
 .quantity-box{
     display:flex;
     align-items:center;
-    gap:15px;
+    gap:18px;
     margin:30px 0;
 }
 
@@ -68,50 +90,145 @@
     width:45px;
     height:45px;
     border:none;
+    border-radius:10px;
     background:#6C63FF;
     color:#fff;
-    font-size:20px;
-    border-radius:8px;
+    font-size:22px;
     cursor:pointer;
+    transition:.3s;
+}
+.quantity-box span{
+    min-width:30px;
+    text-align:center;
+    font-size:22px;
+    font-weight:700;
+}
+.quantity-box button:hover{
+    background:#574bdb;
 }
 
-.quantity-box span{
-    font-size:22px;
-    font-weight:bold;
-}
 
 .details-buttons{
     display:flex;
     gap:15px;
-    margin-top:20px;
+    margin-top:30px;
 }
 
 .add-cart-btn,
 .buy-btn{
     flex:1;
-    padding:15px;
+    height:55px;
     border:none;
-    border-radius:10px;
-    font-size:16px;
+    border-radius:12px;
+    font-size:17px;
     font-weight:600;
     cursor:pointer;
-    transition:.3s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    transition:0.3s;
 }
 
 .add-cart-btn{
     background:#6C63FF;
-    color:white;
-}
-
-.buy-btn{
-    background:#ff6b00;
-    color:white;
+    color:#fff;
 }
 
 .add-cart-btn:hover{
     background:#574bdb;
+    transform:translateY(-3px);
+}
+
+.buy-btn{
+    background:#ff6b00;
+    color:#fff;
 }
 
 .buy-btn:hover{
-    background:#e65c00;
+    background:#e55a00;
+    transform:translateY(-3px);
+}
+
+.related-products{
+    margin-top:80px;
+}
+
+.related-products h2{
+    text-align:center;
+    font-size:32px;
+    margin-bottom:35px;
+}
+
+.related-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:25px;
+}
+
+.related-card{
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    cursor:pointer;
+    text-align:center;
+    transition:.3s;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.related-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 30px rgba(0,0,0,.12);
+}
+
+.related-card img{
+    width:100%;
+    height:200px;
+    object-fit:contain;
+    transition:.3s;
+}
+
+.related-card:hover img{
+    transform:scale(1.08);
+}
+
+.related-card h3{
+    margin:15px 0 10px;
+    font-size:18px;
+}
+
+.related-card p{
+    color:#6C63FF;
+    font-size:22px;
+    font-weight:700;
+}
+@media(max-width:768px){
+
+.product-details-container{
+    grid-template-columns:1fr;
+    gap:30px;
+}
+
+.product-left,
+.product-right{
+    width:100%;
+}
+
+.product-right h1{
+    font-size:30px;
+}
+
+.product-right h2{
+    font-size:28px;
+}
+
+.details-buttons{
+    flex-direction:column;
+}
+
+.add-cart-btn,
+.buy-btn{
+    width:100%;
+}
+
 }
