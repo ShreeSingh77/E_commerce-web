@@ -94,6 +94,14 @@ return (
           <FiTag />
           Coupons
         </NavLink>
+       
+        <NavLink to="/admin/settings">
+          
+           ⚙️ Settings
+        </NavLink>
+       
+       
+        
       </nav>
     </aside>
   </>

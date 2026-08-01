@@ -27,7 +27,7 @@ import AdminAnalytics from "./admin/Analytics";
 import AdminRoute from "./components/AdminRoute.jsx";
 import Users from "./admin/Users.jsx";
 import Categories from "./admin/Categories.jsx";
-
+import Settings from "./admin/Setting.jsx";
 
 function App() {
   return (
@@ -118,14 +118,19 @@ function App() {
 <Route
   path="/admin/users"
   element={
+   <AdminRoute> 
     <Users />
+  </AdminRoute>
   }
 />
 
 <Route
   path="/admin/categories"
+  
   element={
-    <Categories />
+    <AdminRoute>
+      <Categories />
+    </AdminRoute>
   }
 />
 
@@ -150,9 +155,26 @@ function App() {
 
 <Route path="/admin/products" 
 element=
-{<AdminProducts />} />
-    </Routes>
-  );
+{
+  <AdminRoute>
+    <AdminProducts />
+  </AdminRoute>
 }
+/>
+ 
 
+
+
+<Route 
+path="/admin/settings" 
+element=
+{
+  <AdminRoute>
+    <Settings />
+  </AdminRoute>
+}
+ />
+ </Routes>
+);
+}
 export default App;
