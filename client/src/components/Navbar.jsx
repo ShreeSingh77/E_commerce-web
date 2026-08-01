@@ -1,16 +1,24 @@
 import { useState,useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {FiMenu,FiX, FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import { getCurrentUser } from "../services/profileService.js";
 import { useCart } from "../context/CartContext.jsx";
 import { useWishlist } from "../context/WishlistContext.jsx";
 import "./Navbar.css";
-
+import { getAllProducts } from "../services/productService.js";
 const Navbar = () => {
 
    const [menuOpen , setMenuOpen] = useState(false);
     const {cart } =useCart();
     const {wishlist } =useWishlist();
+  const navigate =useNavigate();
+
+
+
+  const [searchOpen,setSearchOpen]=useState(false);
+  const[search,setSearch] =useState("");
+  const [debouncedSearch,setDebouncedSearch]=useState(search);
+  const [suggestions,setSuggestions]=useState([]);
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -31,6 +39,45 @@ useEffect(() => {
 
   checkUser();
 }, []);
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(search);
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [search]);
+
+
+useEffect(() => {
+
+  const fetchSuggestions = async () => {
+
+    if (!search.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+
+      const response = await getAllProducts({
+        search,
+        limit: 5,
+      });
+
+      setSuggestions(response.data.products || []);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
+
+  const timer = setTimeout(fetchSuggestions, 300);
+
+  return () => clearTimeout(timer);
+
+}, [search]);
 return (
   <nav className="navbar">
 
@@ -93,12 +140,89 @@ return (
   </NavLink>
 
 
-  <button className="icon-menu-item search-btn">
+  <button className="icon-menu-item search-btn"
+  onClick={()=>setSearchOpen(!searchOpen)}
+  >
     <FiSearch />
     <span>Search</span>
   </button>
 
+   {searchOpen && (
+  <form
+    className="search-box"
+    onSubmit={(e)=>{
+      e.preventDefault();
 
+      if(search.trim()){
+        navigate(`/products?search=${search}`);
+        setSearch("");
+        setSearchOpen(false);
+      }
+    }}
+  >
+
+    
+
+  <input
+  type="text"
+  placeholder="🔍 Search products..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Escape") {
+      setSearch("");
+      setSuggestions([]);
+      setSearchOpen(false);
+      
+    }
+  }}
+/>
+
+  {search.trim() && (
+  <button
+    type="button"
+    className="search-close"
+    onClick={() => {
+      setSearch("");
+      setSuggestions([]);
+      setSearchOpen(false);
+      navigate("/products");
+    }}
+  >
+    <FiX />
+  </button>
+)}
+
+
+     {suggestions.length > 0 && (
+
+  <div className="search-suggestions">
+
+    {suggestions.map((product) => (
+
+      <div
+        key={product._id}
+        className="suggestion-item"
+        onClick={() => {
+          navigate(`/products/${product._id}`);
+          setSearch("");
+          setSuggestions([]);
+          setSearchOpen(false);
+          navigate(`/products?search=${encodeURIComponent(product.name)
+
+          }`);
+        }}
+      >
+        {product.name}
+      </div>
+
+    ))}
+
+  </div>
+
+)}
+  </form>
+)}
   <NavLink 
     to={isLoggedIn ? "/profile" : "/login"}
     className="icon-menu-item"

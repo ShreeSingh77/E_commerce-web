@@ -11,17 +11,23 @@ const Login = () => {
   
   const handleLogin = async (e) => {
   e.preventDefault();
-
+  console.log("login button clicked");
+  
   try {
     const response = await loginUser({
       email,
       password,
     });
-
+  console.log(response);
+  
     toast.success(response.message || "Login Successful");
 
     navigate("/");
   } catch (error) {
+    console.log(error.response);
+    console.log(error.response?.data);
+    
+    
     toast.error(
       error.response?.data?.message || "Login Failed"
     );
@@ -51,6 +57,12 @@ const Login = () => {
             Forgot Password?
             </Link>
           </div>
+          <p className="register-link">
+  Don't have an account?{" "}
+  <Link to="/register">
+    Create Account
+  </Link>
+</p>
           <button type="submit">
             Login
           </button>

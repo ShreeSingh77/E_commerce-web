@@ -69,10 +69,7 @@
     transition:.3s;
 }
 
-.dashboard-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 15px 35px rgba(0,0,0,.12);
-}
+
 
 .card-header{
     display:flex;
@@ -119,7 +116,7 @@
 }
 .chart-card{
     margin-top:30px;
-   
+   min-height: 350px;
     background:#fff;
     padding:25px;
     border-radius:12px;
@@ -367,7 +364,7 @@
 }
 
 .chart-card canvas{
-    max-height:230px;
+    max-height:280px;
 }
 .low-stock-card-item{
     background:#fff;
@@ -1750,4 +1747,371 @@
 .status-badge.expired{
     background:#fee2e2;
     color:#dc2626;
+}
+
+/* ===========================
+   Responsive Admin Layout
+=========================== */
+
+.admin-menu-btn,
+.admin-close-btn{
+    display:none;
+}
+
+@media (max-width:768px){
+
+.admin-menu-btn{
+    display:flex;
+    position:fixed;
+    top:15px;
+    left:15px;
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:10px;
+    background:#ff6b00;
+    color:#fff;
+    font-size:24px;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+    z-index:3000;
+    box-shadow:0 8px 20px rgba(0,0,0,.18);
+}
+
+.admin-content{
+    margin-left:0;
+    width:100%;
+    padding:75px 16px 20px;
+}
+
+.admin-sidebar{
+    transform:translateX(-100%);
+    transition:.3s ease;
+    z-index:2500;
+}
+
+.admin-sidebar.show{
+    transform:translateX(0);
+}
+
+.admin-close-btn{
+    display:flex;
+    width:40px;
+    height:40px;
+    margin-left:auto;
+    margin-bottom:20px;
+    border:none;
+    border-radius:50%;
+    background:#1f2937;
+    color:#fff;
+    font-size:22px;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+.admin-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:2000;
+}
+
+.dashboard-cards{
+    grid-template-columns:1fr;
+}
+
+.dashboard-grid{
+    grid-template-columns:1fr;
+}
+
+.products-toolbar{
+    flex-direction:column;
+}
+
+.category-filter{
+    width:100%;
+}
+
+.products-table{
+    display:block;
+    overflow-x:auto;
+}
+
+.dashboard-header h1{
+    font-size:26px;
+}
+
+}
+/* ===========================
+   Responsive Tables
+=========================== */
+
+@media (max-width:768px){
+
+.products-table,
+.dashboard-table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+}
+
+.products-table th,
+.products-table td,
+.dashboard-table th,
+.dashboard-table td{
+    padding:12px;
+    font-size:14px;
+}
+
+.product-img{
+    width:50px;
+    height:50px;
+}
+
+.edit-btn,
+.delete-btn{
+    padding:8px 12px;
+    font-size:13px;
+}
+
+.pagination{
+    flex-wrap:wrap;
+    gap:12px;
+}
+
+.pagination button{
+    min-width:100px;
+}
+
+}
+@media (max-width:768px){
+
+.coupon-modal{
+    width:92%;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.coupon-modal input{
+    width:100%;
+    box-sizing:border-box;
+}
+
+.coupon-modal-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.coupon-save-btn,
+.coupon-cancel-btn{
+    width:100%;
+}
+
+}
+/* ===========================
+   Categories & Coupons Responsive
+=========================== */
+
+.admin-page{
+    width:100%;
+}
+
+.admin-card{
+    width:100%;
+    overflow:hidden;
+    background:#fff;
+    border-radius:16px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+@media (max-width:768px){
+
+.admin-content{
+    padding:75px 12px 20px;
+}
+
+.admin-page{
+    width:100%;
+}
+
+.admin-card{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+.admin-table{
+    min-width:650px;
+}
+
+.admin-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:15px;
+}
+
+.admin-header .add-btn{
+    width:100%;
+}
+
+.category-modal,
+.coupon-modal{
+    width:92%;
+    max-width:420px;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.category-modal input,
+.category-modal textarea,
+.coupon-modal input{
+    width:100%;
+    box-sizing:border-box;
+}
+
+.category-modal-buttons,
+.coupon-modal-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.category-save-btn,
+.category-cancel-btn,
+.coupon-save-btn,
+.coupon-cancel-btn{
+width:100%;
+}}
+@media (max-width:850px){
+
+.coupon-modal{
+    width:92%;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.coupon-modal input{
+    width:100%;
+    box-sizing:border-box;
+}
+
+.coupon-modal-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.coupon-save-btn,
+.coupon-cancel-btn{
+    width:100%;
+}
+
+}
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+.table-wrapper::-webkit-scrollbar{
+    height:6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb{
+    background:#cbd5e1;
+    border-radius:10px;
+}
+
+.admin-table{
+    min-width:850px;
+}
+.chart-card{
+    width:100%;
+    overflow:hidden;
+}
+
+.chart-container{
+    position:relative;
+    width:100%;
+    height:350px;
+}
+
+@media (max-width:768px){
+
+.chart-container{
+    height:250px;
+}
+
+.chart-card{
+    padding:16px;
+}
+
+}
+/* ===========================
+   Dashboard Mobile Fix
+=========================== */
+
+.chart-card,
+.table-card,
+.low-stock-card{
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+    box-sizing:border-box;
+}
+
+.chart-card canvas{
+    width:100% !important;
+    max-width:100% !important;
+    height:auto !important;
+}
+
+.table-card{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+
+.dashboard-table{
+    min-width:600px;
+}
+
+.low-stock-header{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.low-stock-header h4{
+    word-break:break-word;
+}
+
+@media (max-width:768px){
+
+.dashboard-grid{
+    grid-template-columns:1fr;
+    gap:20px;
+}
+
+.left-panel,
+.right-panel{
+    width:100%;
+    min-width:0;
+}
+
+.chart-card,
+.table-card,
+.low-stock-card{
+    padding:16px;
+}
+
+.chart-card h2,
+.table-card h2,
+.low-stock-card h2{
+    font-size:18px;
+}
+
 }

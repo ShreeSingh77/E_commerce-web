@@ -51,6 +51,8 @@ const chartData = {
 
 const options = {
   responsive: true,
+  maintainAspectRatio: false,
+
   plugins: {
     legend: {
       display: false,
@@ -61,7 +63,9 @@ const options = {
   <div className="chart-card">
     <h2>Monthly Sales</h2>
     
-    <Bar data={chartData} options={options} />
+  <div style={{ height: "280px" }}>
+  <Bar data={chartData} options={options} />
+</div>
   </div>
 );
     

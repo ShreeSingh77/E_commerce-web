@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { forgotPassword } from "../services/profileService";
+import { forgotPassword } from "../services/profileService.js";
 import toast from "react-hot-toast";
 import "./ForgotPassword.css";
 

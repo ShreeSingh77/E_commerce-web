@@ -382,7 +382,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
-    const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+    const resetLink = `http://192.168.240.164:5173/reset-password/${resetToken}`;
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpiry = Date.now() + 15 * 60 * 1000;
 

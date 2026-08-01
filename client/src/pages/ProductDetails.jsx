@@ -5,6 +5,12 @@ import "./ProductDetails.css"
 import {FiShoppingCart} from "react-icons/fi"
 import { addToCart } from "../services/cartServices.js";
 import toast from "react-hot-toast";
+import {getCurrentUser } from "../services/profileService.js";
+import { getReviews,
+  addReview,
+updateReview,
+deleteReview,
+ } from "../services/reviewService.js";
 const ProductDetails = () => {
 
   const { id } = useParams();
@@ -12,15 +18,50 @@ const [relatedProducts,setRelatedProducts] = useState([]);
 const [product, setProduct] = useState(null);
 const [loading, setLoading] = useState(true);
 const [quantity,setQuantity]=useState(1);
+
+
+const [reviews,setReviews]=useState([]);
+const [rating,setRating]=useState(5);
+const[comment,setComment] =useState("");
+const [currentUser,setCurrentUser] =useState(null);
+const [editingReviewId, setEditingReviewId] = useState(null);
+const [editRating, setEditRating] = useState(5);
+const [editComment, setEditComment] = useState("");
+
 const navigate =useNavigate();
+
+
+
 useEffect(() => {
   fetchProduct();
+  fetchReviews();
+  fetchCurrentUser();
 }, [id]);
+const fetchCurrentUser = async () => {
+  try {
+    const response = await getCurrentUser();
+    console.log(currentUser);
+    
+    setCurrentUser(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const fetchReviews = async () => {
+  try {
+    const response = await getReviews(id);
 
+    console.log(response);
+    setReviews(response.data || []);
+  } catch (error) {
+    console.log(error);
+  }
+};
 const fetchProduct = async () => {
   try {
     // Current Product
     const response = await getProductById(id);
+
     setProduct(response.data);
 
     // All Products
@@ -47,6 +88,78 @@ setRelatedProducts(related);
 if(loading){
   return <h1>Loading...</h1>
 }
+const handleSubmitReview = async () => {
+  try {
+    const response = await addReview({
+      productId: product._id,
+      rating,
+      comment,
+    });
+
+    toast.success(response.message || "Review added successfully");
+
+    setRating(5);
+    setComment("");
+
+    fetchReviews();
+    fetchProduct();
+
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Failed to add review"
+    );
+  }
+};
+const handleEditReview = (review) => {
+  setEditingReviewId(review._id);
+  setEditRating(review.rating);
+  setEditComment(review.comment);
+};
+
+const handleDeleteReview = async (reviewId) => {
+  try {
+    const response = await deleteReview(reviewId);
+
+    toast.success(
+      response.message || "Review deleted successfully"
+    );
+
+    fetchReviews();
+    fetchProduct();
+
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Failed to delete review"
+    );
+  }
+};
+const handleUpdateReview = async () => {
+  try {
+    const response = await updateReview(
+      editingReviewId,
+      {
+        rating: editRating,
+        comment: editComment,
+      }
+    );
+
+    toast.success(
+      response.message || "Review updated successfully"
+    );
+
+    setEditingReviewId(null);
+    setEditRating(5);
+    setEditComment("");
+
+    fetchReviews();
+    fetchProduct();
+
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || "Failed to update review"
+    );
+  }
+};
 const handleAddToCart = async () => {
   try {
     const response = await addToCart({
@@ -81,8 +194,9 @@ const handleAddToCart = async () => {
         <h1>{product.name}</h1>
 
         <div className="product-rating">
-          ⭐⭐⭐⭐⭐ <span>(4.5)</span>
-        </div>
+  ⭐ {product.averageRating || 0}
+  <span> ({product.totalReviews || 0} Reviews)</span>
+</div>
 
         <h2>₹ {product.price}</h2>
 
@@ -130,6 +244,96 @@ const handleAddToCart = async () => {
       </div>
 
     </div>
+
+
+    <div className="review-section">
+
+  <h2>Write a Review</h2>
+
+  <div className="rating-select">
+
+    <label>Rating</label>
+
+    <select
+  value={editingReviewId ? editRating : rating}
+  onChange={(e) =>
+    editingReviewId
+      ? setEditRating(Number(e.target.value))
+      : setRating(Number(e.target.value))
+  }
+>
+      <option value={5}>⭐⭐⭐⭐⭐ (5)</option>
+      <option value={4}>⭐⭐⭐⭐ (4)</option>
+      <option value={3}>⭐⭐⭐ (3)</option>
+      <option value={2}>⭐⭐ (2)</option>
+      <option value={1}>⭐ (1)</option>
+    </select>
+
+  </div>
+
+ <textarea
+  placeholder="Write your review..."
+  value={editingReviewId ? editComment : comment}
+  onChange={(e) =>
+    editingReviewId
+      ? setEditComment(e.target.value)
+      : setComment(e.target.value)
+  }
+/>
+
+  <button className="review-btn"
+  onClick={
+    editingReviewId
+    ?handleUpdateReview
+    :handleSubmitReview
+  }
+  >
+  {
+    editingReviewId
+    ?"Update Review"
+    :"submit Review"
+  }
+  </button>
+
+</div>
+<div className="reviews-list">
+  <h2>Customer Reviews</h2>
+
+  {reviews.length === 0 ? (
+    <p>No reviews yet.</p>
+  ) : (
+    reviews.map((review) => (
+      <div className="review-card" key={review._id}>
+        <h4>{review.user.fullName}</h4>
+
+        <p>
+          ⭐ {review.rating}/5
+        </p>
+
+        <p>{review.comment}</p>
+         {currentUser && review.user._id === currentUser._id && (
+  <div className="review-actions">
+
+    <button
+      onClick={() => handleEditReview(review)}
+
+>
+      Edit
+    </button>
+
+    <button
+      onClick={() => handleDeleteReview(review._id)}
+    >
+      Delete
+    </button>
+
+  </div>
+)}
+      </div>
+    ))
+  )}
+</div>
+
      <div className="related-products">
 
   <h2>Related Products</h2>

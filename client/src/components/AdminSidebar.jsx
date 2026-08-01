@@ -1,5 +1,8 @@
+import { useState } from "react";
 import {
   FiGrid,
+  FiMenu,
+  FiX,
   FiBox,
   FiShoppingCart,
   FiUsers,
@@ -9,49 +12,92 @@ import {
 import { NavLink } from "react-router-dom";
 
 const AdminSidebar = () => {
-  return (
-    <aside className="admin-sidebar">
+
+  const [menuOpen,setMenuOpen] = useState(false);
+return (
+  <>
+    <button
+      className="admin-menu-btn"
+      onClick={() => setMenuOpen(true)}
+    >
+      <FiMenu />
+    </button>
+
+    {menuOpen && (
+      <div
+        className="admin-overlay"
+        onClick={() => setMenuOpen(false)}
+      />
+    )}
+
+    <aside
+      className={`admin-sidebar ${
+        menuOpen ? "show" : ""
+      }`}
+    >
+      <button
+        className="admin-close-btn"
+        onClick={() => setMenuOpen(false)}
+      >
+        <FiX />
+      </button>
 
       <h2 className="admin-logo">
         Admin Panel
       </h2>
 
       <nav>
-
-        <NavLink to="/admin/dashboard">
+        <NavLink
+          to="/admin/dashboard"
+          onClick={() => setMenuOpen(false)}
+        >
           <FiGrid />
           Dashboard
         </NavLink>
 
-        <NavLink to="/admin/products">
+        <NavLink
+          to="/admin/products"
+          onClick={() => setMenuOpen(false)}
+        >
           <FiBox />
           Products
         </NavLink>
 
-        <NavLink to="/admin/orders">
+        <NavLink
+          to="/admin/orders"
+          onClick={() => setMenuOpen(false)}
+        >
           <FiShoppingCart />
           Orders
         </NavLink>
 
-        <NavLink to="/admin/users">
+        <NavLink
+          to="/admin/users"
+          onClick={() => setMenuOpen(false)}
+        >
           <FiUsers />
-          <span>User</span>
+          User
         </NavLink>
 
-        <NavLink to="/admin/categories">
+        <NavLink
+          to="/admin/categories"
+          onClick={() => setMenuOpen(false)}
+        >
           <FiLayers />
           Categories
         </NavLink>
 
-        <NavLink to="/admin/coupons">
+        <NavLink
+          to="/admin/coupons"
+          onClick={() => setMenuOpen(false)}
+        >
           <FiTag />
           Coupons
         </NavLink>
-
       </nav>
-
     </aside>
-  );
+  </>
+);
 };
 
 export default AdminSidebar;

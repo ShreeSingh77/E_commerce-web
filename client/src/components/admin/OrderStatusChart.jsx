@@ -49,13 +49,21 @@ const data = {
     },
   ],
 };
-  return (
-    <div className="chart-card">
-      <h2>📊 Orders by Status</h2>
 
-      <Doughnut data={data} />
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+};
+return (
+  <div className="chart-card">
+    <h2>📊 Orders by Status</h2>
+
+    <div style={{ height: "280px" }}>
+      <Doughnut data={data} options={options} />
     </div>
-  );
+
+  </div>
+);
 };
 
 export default OrderStatusChart;

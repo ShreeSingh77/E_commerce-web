@@ -122,7 +122,7 @@ useEffect(() => {
     <AdminSidebar />
 
     <div className="admin-content">
-
+<div className="admin-page">
       <div className="admin-header">
         <div>
           <h2>Coupons</h2>
@@ -136,7 +136,7 @@ useEffect(() => {
           + Add Coupon
         </button>
       </div>
-
+       <div className="table-wrapper">
       <table className="admin-table">
 
   <thead>
@@ -207,6 +207,7 @@ useEffect(() => {
   </tbody>
 
 </table>
+</div>
 {showModal && (
   <div className="coupon-modal-overlay">
 
@@ -283,6 +284,7 @@ useEffect(() => {
 
   </div>
 )}
+</div>
     </div>
   </div>
 );

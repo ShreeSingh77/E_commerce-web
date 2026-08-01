@@ -35,3 +35,17 @@ export const resetPassword = async (token, data) => {
 
   return response.data;
 };
+export const updateAvatar = async (formData) => {
+  const response = await api.patch(
+    "/users/avatar",
+    formData,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return response.data;
+};

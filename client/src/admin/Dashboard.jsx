@@ -71,57 +71,55 @@ useEffect(()=>{
     ))}
   </div>
 ) : (
-  <div className="dashboard-cards">
+ <div className="dashboard-cards">
 
-    {/* Existing Dashboard Cards */}
-   <div className="dashboard-cards">
-
-          <div className="dashboard-card">
-  <div className="card-header">
-    <div className="card-icon blue">
-      <FiBox />
+  <div className="dashboard-card">
+    <div className="card-header">
+      <div className="card-icon blue">
+        <FiBox />
+      </div>
     </div>
+
+    <h3>Total Products</h3>
+    <h2>{stats.totalProducts}</h2>
   </div>
 
-  <h3>Total Products</h3>
-  <h2>{stats.totalProducts}</h2>
+  <div className="dashboard-card">
+    <div className="card-header">
+      <div className="card-icon orange">
+        <FiShoppingCart />
+      </div>
+    </div>
+
+    <h3>Total Orders</h3>
+    <h2>{stats.totalOrders}</h2>
+  </div>
+
+  <div className="dashboard-card">
+    <div className="card-header">
+      <div className="card-icon green">
+        <FiUsers />
+      </div>
+    </div>
+
+    <h3>Total Users</h3>
+    <h2>{stats.totalUsers}</h2>
+  </div>
+
+  <div className="dashboard-card">
+    <div className="card-header">
+      <div className="card-icon purple">
+        <FiDollarSign />
+      </div>
+    </div>
+
+    <h3>Total Revenue</h3>
+    <h2>₹{Math.round(stats.totalRevenue)}</h2>
+  </div>
+
 </div>
 
-          <div className="dashboard-card">
-  <div className="card-header">
-    <div className="card-icon orange">
-      <FiShoppingCart />
-    </div>
-  </div>
 
-  <h3>Total Orders</h3>
-  <h2>{stats.totalOrders}</h2>
-</div>
-
-          <div className="dashboard-card">
-  <div className="card-header">
-    <div className="card-icon green">
-      <FiUsers />
-    </div>
-  </div>
-
-  <h3>Total Users</h3>
-  <h2>{stats.totalUsers}</h2>
-</div>
-
-          <div className="dashboard-card">
-  <div className="card-header">
-    <div className="card-icon purple">
-      <FiDollarSign />
-    </div>
-  </div>
-
-  <h3>Total Revenue</h3>
-  <h2>₹{Math.round(stats.totalRevenue)}</h2>
-</div>
-
-        </div>
-  </div>
 )}
         <div className="dashboard-grid" >
           <div className="left-panel">

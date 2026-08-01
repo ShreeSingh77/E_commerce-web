@@ -148,5 +148,70 @@
 
 .password-form .logout-btn:hover{
     background:#dc2626;
+    
     transform:translateY(-2px);
+}
+.avatar-input{
+    display: none;
+}
+.avatar-actions{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin:15px 0 20px;
+    flex-wrap:wrap;
+}
+.edit-btn:disabled{
+    opacity: 6;
+    cursor: not-allowed;
+}
+.profile-avatar{
+    width:150px;
+    height:150px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    overflow:hidden;
+    border:4px solid #ff6b35;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f5f5f5;
+    font-size:60px;
+    position: relative;
+    transition: 0.3s;
+}
+.profile-avatar:hover{
+    transform: scale(1.03);
+}
+.profile-avatar-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.camera-btn{
+    position:absolute;
+    right:6px;
+    bottom:6px;
+
+    width:36px;
+    height:36px;
+
+    border-radius:50%;
+    border:3px solid #fff;
+
+    background:#ff6b35;
+    color:#fff;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+
+.camera-btn:hover{
+    transform:scale(1.1);
 }

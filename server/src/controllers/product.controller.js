@@ -64,6 +64,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
     const {
         search = "",
         category,
+        minPrice,
+        maxPrice,
         page = 1,
         limit = 10,
         sort = "-createdAt"
@@ -83,7 +85,20 @@ const getAllProducts = asyncHandler(async (req, res) => {
     if (category) {
         filter.category = category;
     }
+    // Filter by price
+if (minPrice || maxPrice) {
 
+    filter.price = {};
+
+    if (minPrice) {
+        filter.price.$gte = Number(minPrice);
+    }
+
+    if (maxPrice) {
+        filter.price.$lte = Number(maxPrice);
+    }
+
+}
     const products = await Product.find(filter)
         .populate("category", "name")
         .populate("createdBy", "fullName email")
@@ -91,6 +106,33 @@ const getAllProducts = asyncHandler(async (req, res) => {
         .skip((page - 1) * limit)
         .limit(Number(limit));
 
+
+  const productsWithRatings = await Promise.all(
+    products.map(async (product) => {
+
+        const reviews = await Review.find({
+            product: product._id
+        });
+
+        const totalReviews = reviews.length;
+
+        const averageRating =
+            totalReviews > 0
+                ? (
+                    reviews.reduce(
+                        (sum, review) => sum + review.rating,
+                        0
+                    ) / totalReviews
+                ).toFixed(1)
+                : 0;
+
+        return {
+            ...product.toObject(),
+            averageRating,
+            totalReviews,
+        };
+    })
+);
     const totalProducts = await Product.countDocuments(filter);
 
     return res.status(200).json(
@@ -100,7 +142,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
                 totalProducts,
                 currentPage: Number(page),
                 totalPages: Math.ceil(totalProducts / limit),
-                products
+                products:productsWithRatings
             },
             "Products fetched successfully"
         )
@@ -120,11 +162,29 @@ const getProductById = asyncHandler(async(req,res)=>{
     if(!product){
         throw new ApiError(400, "product not  found");
     }
+    const reviews = await Review.find({
+    product: product._id
+});
+
+const totalReviews = reviews.length;
+
+const averageRating =
+    totalReviews > 0
+        ? (
+            reviews.reduce(
+                (sum, review) => sum + review.rating,
+                0
+            ) / totalReviews
+        ).toFixed(1)
+        : 0;
    return res
    .status(200)
    .json(new ApiResponse(
-    200,
-    product,
+    200,{
+...product.toObject(),
+averageRating,
+totalReviews,
+    },
     "Products fetched successfully"
    )
 );

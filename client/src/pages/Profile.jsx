@@ -1,6 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect,useRef, useState } from "react";
 import {useNavigate} from "react-router-dom";
-import { getCurrentUser,logoutUser,updateProfile ,changePassword} from "../services/profileService.js";
+import { getCurrentUser,logoutUser,
+  updateProfile ,
+  changePassword,
+updateAvatar,
+
+} from "../services/profileService.js";
+import {FiCamera} from "react-icons/fi";
 import toast from "react-hot-toast";
 import "./Profile.css";
 
@@ -8,12 +14,14 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-
+  const [avatar,setAvatar] =useState(null);
+  const fileInputRef =useRef(null);
 const [formData, setFormData] = useState({
   fullName: "",
   username: "",
   email: "",
 });
+
 useEffect(() => {
   if (user) {
     setFormData({
@@ -103,6 +111,33 @@ const handleUpdate = async () => {
     );
   }
 };
+
+const handleAvatarUpload = async () => {
+  if (!avatar) {
+    toast.error("Please select an image");
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+
+    formData.append("avatar", avatar);
+
+    const response = await updateAvatar(formData);
+
+    toast.success(response.message);
+
+    fetchUser();
+
+    setAvatar(null);
+
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
+      "Avatar upload failed"
+    );
+  }
+};
 const handlePasswordChange = (e) => {
   setPasswordData({
     ...passwordData,
@@ -125,9 +160,56 @@ const handlePasswordChange = (e) => {
   <div className="profile-page">
     <div className="profile-card">
 
-      <div className="profile-avatar">
-        👤
-      </div>
+  <div className="profile-avatar">
+
+  {user.avatar ? (
+    <img
+      src={user.avatar}
+      alt={user.fullName}
+      className="profile-avatar-img"
+    />
+  ) : (
+    "👤"
+  )}
+
+  <button
+    className="camera-btn"
+    onClick={() => fileInputRef.current.click()}
+  >
+    <FiCamera />
+  </button>
+
+</div>
+
+
+   <input
+  ref={fileInputRef}
+  className="avatar-input"
+  type="file"
+  accept="image/*"
+  onChange={(e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setAvatar(file);
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    updateAvatar(formData)
+      .then((response) => {
+        toast.success(response.message);
+        fetchUser();
+      })
+      .catch((error) => {
+        toast.error(
+          error.response?.data?.message ||
+          "Avatar upload failed"
+        );
+      });
+  }}
+/>
 
       <h2>{user.fullName}</h2>
 
