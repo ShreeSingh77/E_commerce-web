@@ -331,14 +331,15 @@ const handlePasswordChange = (e) => {
                 className="edit-btn"
                 onClick={() => setIsEditing(true)}
               >
-                Edit Profile
+               ✏️ Edit Profile
+
               </button>
 
               <button
                 className="password-btn"
                 onClick={() => setShowPasswordForm(true)}
               >
-                Change Password
+               🔒 Change Password
               </button>
             </>
           )}
@@ -347,7 +348,7 @@ const handlePasswordChange = (e) => {
             className="logout-btn"
             onClick={handleLogout}
           >
-            Logout
+           🚪 Logout
           </button>
 
         </div>

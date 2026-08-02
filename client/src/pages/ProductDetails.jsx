@@ -6,13 +6,14 @@ import {FiShoppingCart} from "react-icons/fi"
 import { addToCart } from "../services/cartServices.js";
 import toast from "react-hot-toast";
 import {getCurrentUser } from "../services/profileService.js";
+import {useCart } from "../context/CartContext.jsx";
 import { getReviews,
   addReview,
 updateReview,
 deleteReview,
  } from "../services/reviewService.js";
 const ProductDetails = () => {
-
+  const {fetchCart} =useCart();
   const { id } = useParams();
 const [relatedProducts,setRelatedProducts] = useState([]);
 const [product, setProduct] = useState(null);
@@ -166,7 +167,8 @@ const handleAddToCart = async () => {
       productId: product._id,
       quantity,
     });
-
+   await fetchCart();
+   
     toast.success(response.message || "Product added to cart");
   } catch (error) {
   console.log(error.response);
