@@ -41,7 +41,7 @@ useEffect(() => {
 const fetchCurrentUser = async () => {
   try {
     const response = await getCurrentUser();
-    console.log(currentUser);
+  
     
     setCurrentUser(response.data);
   } catch (error) {
@@ -52,7 +52,7 @@ const fetchReviews = async () => {
   try {
     const response = await getReviews(id);
 
-    console.log(response);
+   
     setReviews(response.data || []);
   } catch (error) {
     console.log(error);

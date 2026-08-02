@@ -31,7 +31,7 @@ const addToWishlist = asyncHandler(async (req, res) => {
         user: req.user._id,
         product: productId
     });
-    console.log("Wishlist Saved",wishlist);
+   
     
     return res.status(201).json(
         new ApiResponse(

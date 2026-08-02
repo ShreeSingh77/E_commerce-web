@@ -29,7 +29,7 @@ const MonthlySalesChart = () => {
     const fetchSales = async ()=>{
         try{
             const response = await getMonthlySales();
-            console.log(response);
+            
             setSales(response.data);
         }catch(error){
             console.log(error);

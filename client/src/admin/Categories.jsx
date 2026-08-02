@@ -26,7 +26,7 @@ const [formData, setFormData] = useState({
     try {
       const response = await getAllCategories();
 
-      console.log("Categories:", response);
+      
 
       setCategories(response.data || []);
     } catch (error) {

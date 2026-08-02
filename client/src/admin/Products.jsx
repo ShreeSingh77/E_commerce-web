@@ -43,7 +43,7 @@ const fetchProducts = async (page = 1) => {
         search,
         category:selectedCategory,
      });
-    console.log(response);
+    
     setProducts(response.data.products);
     setCurrentPage(response.data.currentPage);
     setTotalPages(response.data.totalPages);
@@ -60,7 +60,7 @@ const fetchCategories = async () => {
   try {
     const response = await getAllCategories();
 
-    console.log(response);
+  
 
     setCategories(response.data);
   } catch (error) {
@@ -77,7 +77,7 @@ const handleChange = (e) => {
 const handleImageChange = (e) => {
     const files =Array.from(e.target.files);
 
-    console.log(files);
+    // console.log(files);
     
   setImages(files);
 };
@@ -132,7 +132,7 @@ setImages([]);
   }
 
 };
-console.log(editingProduct);
+
 
 const handleEdit = (product) => {
 

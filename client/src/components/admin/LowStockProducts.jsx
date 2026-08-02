@@ -11,7 +11,7 @@ const LowStockProducts = () => {
   const fetchLowStock = async () => {
     try {
       const response = await getLowStockProducts();
-      console.log(response);
+      
 
       setProducts(response.data);
     } catch (error) {

@@ -9,8 +9,6 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       const response = await getMyOrders();
-
-      console.log("my orders",response);
       
       setOrders(response.data || []);
     } catch (error) {

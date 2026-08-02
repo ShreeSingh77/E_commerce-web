@@ -20,7 +20,7 @@ const Users = () => {
     try {
       const response = await getAllUsers();
 
-      console.log(response);
+      
 
       setUsers(response.data);
     } catch (error) {

@@ -1,7 +1,7 @@
 import "./Admin.css";
 import { useEffect,useState } from "react";
 import { getCurrentUser} from "../services/profileService.js";
-import { NavLink,Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import AdminSidebar from "../components/AdminSidebar.jsx";
 import { updateProfile ,
   changePassword,
@@ -187,7 +187,7 @@ setOriginalData({
     onChange={(e) =>{
       const file =e.target.files[0];
 
-      console.log(file);
+      
       setAvatarFile(e.target.files[0])}}
   />
 

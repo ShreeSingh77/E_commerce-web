@@ -13,7 +13,7 @@ import {Review }  from "../models/review.model.js"
 const createProduct = asyncHandler(async (req, res) => {
 
     const { name, description, price, stock, category } = req.body;
-   console.log("Body",req.body);
+   
    
     if (!name || !description || !price || !stock || !category) {
         throw new ApiError(400, "All fields are required");
@@ -27,7 +27,7 @@ const createProduct = asyncHandler(async (req, res) => {
 
     // Upload product images to Cloudinary
     const imageLocalPaths = req.files?.map((file) => file.path) || [];
-    console.log("Files",req.files);
+    
     
     const imageUrls = [];
 

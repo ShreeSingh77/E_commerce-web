@@ -40,11 +40,11 @@ const fetchAddresses = async () => {
 
   try {
     const response = await getAddresses();
-   console.log("Add response",response);
+   
    
    const addressList = response.data || [];
    
-   console.log("ADDRESS LIST",addressList);
+  
    
 setAddresses(addressList);
 
@@ -122,8 +122,6 @@ const fetchCart = async () => {
     setLoading(true);
 
     const response = await getCart();
-    console.log("cart responce",response);
-    console.log("cart items",cartItems);
     
     setCartItems(response.data || []);
   } catch (error) {

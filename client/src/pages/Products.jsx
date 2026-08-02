@@ -77,7 +77,7 @@ setTotalPages(response.data.totalPages);
 const fetchCategories = async () => {
   try {
     const response = await getAllCategories();
-    console.log("Category response",response);
+  
     
     setCategories(response.data || []);
   } catch (error) {

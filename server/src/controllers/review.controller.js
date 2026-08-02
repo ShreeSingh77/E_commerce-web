@@ -97,15 +97,13 @@ const updateReview = asyncHandler(async (req, res) => {
 const deleteReview = asyncHandler(async (req, res) => {
  
     const { reviewId } = req.params;
-  console.log("Review Id",reviewId );
-  console.log("logged user",req.user._id);
   
-  
+ 
     const review = await Review.findOneAndDelete({
         _id: reviewId,
         user: req.user._id
     });
-console.log("review found",review);
+
 
     if (!review) {
         throw new ApiError(404, "Review not found");

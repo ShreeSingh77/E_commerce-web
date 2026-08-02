@@ -11,14 +11,14 @@ const Login = () => {
   
   const handleLogin = async (e) => {
   e.preventDefault();
-  console.log("login button clicked");
+  
   
   try {
     const response = await loginUser({
       email,
       password,
     });
-  console.log(response);
+  
   
     toast.success(response.message || "Login Successful");
 

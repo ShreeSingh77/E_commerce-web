@@ -27,8 +27,6 @@ const Cart=()=>{
   try {
     const response = await getCart();
    
-    console.log("fullname response",response);
-    console.log("fill cart data" ,response.data);
     
     setCart(response.data || []);
   } catch (error) {

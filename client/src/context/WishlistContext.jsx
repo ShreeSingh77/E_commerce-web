@@ -10,7 +10,7 @@ export const WishlistProvider = ({ children }) => {
   const fetchWishlist = async () => {
     try {
       const response = await getWishlist();
-      console.log("wishlist response",response.data);
+      
       
       setWishlist(response.data || []);
     } catch (error) {

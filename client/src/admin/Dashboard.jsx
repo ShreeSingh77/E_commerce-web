@@ -25,8 +25,8 @@ const Dashboard = () => {
 const fetchDashboard = async () => {
   try {
     const response = await getDashboardStats();
-     console.log("response",response);
-     console.log("Response.data",response.data);
+     
+     
      
    setStats(response.data)
 
