@@ -121,7 +121,7 @@ const loginUser = asyncHandler(async(req, res) =>{
 
      const options ={
         httpOnly:true,
-        secure:false,
+        secure:true,
         sameSite:"none"
      }
 
@@ -156,7 +156,7 @@ const logoutUser = asyncHandler(async(req,res )=>{
 const options ={
     httpOnly:true,
 
-    secure:false,
+    secure:true,
     sameSite:"none"
 }
 
@@ -209,7 +209,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: false,
+            secure:true,
             sameSite: "none"
         };
 
@@ -382,7 +382,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
-   const resetLink = `https://e-commerce-1m9ykdc3z-shreesingh77s-projects.vercel.app/reset-password/${resetToken}`;
+   const resetLink = `https://e-commerce-web-git-main-shreesingh77s-projects.vercel.app/reset-password/${resetToken}`;
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpiry = Date.now() + 15 * 60 * 1000;
 
