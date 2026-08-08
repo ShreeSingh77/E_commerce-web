@@ -22,7 +22,11 @@ const Login = () => {
   
     toast.success(response.message || "Login Successful");
 
-    navigate("/");
+   if (response.data?.user?.role === "admin") {
+  navigate("/admin/dashboard");
+} else {
+  navigate("/");
+}
   } catch (error) {
     console.log(error.response);
     console.log(error.response?.data);
