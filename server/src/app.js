@@ -16,10 +16,17 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://e-commerce-web-git-main-shreesingh77s-projects.vercel.app",
-    ],
+    origin: function (origin, callback) {
+      if (
+        !origin ||
+        origin === "http://localhost:5173" ||
+        origin.endsWith(".vercel.app")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
